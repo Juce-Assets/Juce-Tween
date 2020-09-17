@@ -12,6 +12,6 @@
     "email": "gsunyercaldu@gmail.com",
     "url": "https://github.com/Guillemsc/Juce-Tween"
   },
-  "hideInEditor": false,
-  "type": "library"
+  "type": "template",
+  "hideInEditor": false
 }

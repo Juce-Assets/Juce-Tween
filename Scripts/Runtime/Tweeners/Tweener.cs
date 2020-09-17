@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Juce.Tween
 {
-    public class Tweener<T>
+    public class Tweener<T> : ITweener
     {
         private readonly T initialValue;
         private readonly T finalValue;
@@ -17,15 +17,13 @@ namespace Juce.Tween
         private EaseDelegate easeFunction;
         private float elapsedTime;
 
-        public delegate T Getter();
         public delegate void Setter(T value);
 
         public bool IsPlaying { get; protected set; }
-        public event Action OnComplete;
 
-        internal Tweener(Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
+        internal Tweener(T initialValue, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
         {
-            this.initialValue = getter();
+            this.initialValue = initialValue;
             this.finalValue = finalValue;
             this.setter = setter;
             this.duration = duration;
@@ -33,23 +31,14 @@ namespace Juce.Tween
 
             timeScale = 1.0f;
             IsPlaying = true;
-
-            SetEase(Ease.Linear);
-
-            Update();
         }
 
-        internal void SetEase(Ease ease)
+        public void SetEase(EaseDelegate easeFunction)
         {
-            easeFunction = PresetEaser.GetEaseDelegate(Ease.Linear); 
+            this.easeFunction = easeFunction;
         }
 
-        internal void SetEase(AnimationCurve animationCurve)
-        {
-            easeFunction = AnimationCurveEaser.GetEaseDelegate(animationCurve);
-        }
-
-        internal void Update()
+        public void Update()
         {
             if (!IsPlaying)
             {
@@ -70,11 +59,15 @@ namespace Juce.Tween
             }
             else
             {
-                setter(finalValue);
-
-                IsPlaying = false;
-                OnComplete?.Invoke();
+                Complete();
             }
+        }
+
+        public void Complete()
+        {
+            setter(finalValue);
+
+            IsPlaying = false;
         }
     }
 }

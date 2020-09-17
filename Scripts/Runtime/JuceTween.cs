@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Juce.Tween
 {
     public class JuceTween : MonoBehaviour
     {
+        private readonly List<Tween> aliveTweens = new List<Tween>();
+        private readonly List<Tween> tweensToRemove = new List<Tween>();
+
         private float timeScale;
 
         private static JuceTween instance;
@@ -41,9 +45,46 @@ namespace Juce.Tween
             Init();
         }
 
+        private void Update()
+        {
+            UpdateTweens();
+        }
+
         private void Init()
         {
             timeScale = 1.0f;
+        }
+
+        internal static void Play(Tween tween)
+        {
+            Instance.aliveTweens.Add(tween);
+        }
+
+        private void UpdateTweens()
+        {
+            for (int i = 0; i < aliveTweens.Count; ++i)
+            {
+                Tween currTweener = aliveTweens[i];
+
+                if(!currTweener.IsPlaying)
+                {
+                    currTweener.Play();
+                }
+
+                currTweener.Update();
+
+                if (currTweener.IsCompleted || currTweener.IsKilled)
+                {
+                    tweensToRemove.Add(currTweener);
+                }
+            }
+
+            for (int i = 0; i < tweensToRemove.Count; ++i)
+            {
+                aliveTweens.Remove(tweensToRemove[i]);
+            }
+
+            tweensToRemove.Clear();
         }
     }
 }

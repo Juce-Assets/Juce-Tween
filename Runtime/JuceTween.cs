@@ -68,7 +68,7 @@ namespace Juce.Tween
 
                 if(!currTweener.IsPlaying)
                 {
-                    currTweener.Play();
+                    currTweener.Init();
                 }
 
                 currTweener.Update();

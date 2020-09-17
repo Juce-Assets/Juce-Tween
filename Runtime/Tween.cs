@@ -76,6 +76,11 @@ namespace Juce.Tween
 		}
 
 		public void Play()
+        {
+			JuceTween.Play(this);
+		}
+
+		public void Init()
 		{
 			if(IsPlaying)
             {

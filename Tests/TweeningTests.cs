@@ -18,7 +18,7 @@ public class TweeningTests : MonoBehaviour
 
         tween.SetEase(animationCurve);
 
-        JuceTween.Play(tween);
+        tween.Play();
     }
 
     // Update is called once per frame

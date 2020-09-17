@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "displayName": "Juce-Tween",
   "description": "This is an example package",
-  "unity": "2018.1",
- "keywords": [
+  "keywords": [
     "Juce",
     "Tween"
   ],
@@ -12,5 +11,7 @@
     "name": "Guillem Sunyer",
     "email": "gsunyercaldu@gmail.com",
     "url": "https://github.com/Guillemsc/Juce-Tween"
-  }
+  },
+  "hideInEditor": false,
+  "type": "library"
 }

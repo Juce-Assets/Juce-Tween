@@ -1,174 +1,146 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Juce.Tween
 {
-	public class Tween
-	{
-		private readonly List<ITweener> aliveTweeners = new List<ITweener>();
-		private readonly List<ITweener> tweenersToRemove = new List<ITweener>();
+    public abstract class Tween
+    {
+        protected EaseDelegate EaseFunction;
 
-		private EaseDelegate easeFunction;
+        public bool IsPlaying { get; protected set; }
+        public bool IsCompleted { get; protected set; }
+        public bool IsKilled { get; protected set; }
 
-		public bool IsPlaying { get; protected set; }
-		public bool IsCompleted { get; protected set; }
-		public bool IsKilled { get; protected set; }
+        public event Action OnComplete;
+        public event Action OnKill;
+        public event Action OnCompleteOrKill;
 
-		public event Action OnComplete;
-		public event Action OnKill;
-		public event Action OnCompleteOrKill;
-
-		public Tween()
+        public Tween()
         {
-			SetEase(Ease.Linear);
-		}
-
-		public static Tween To(float initialValue, Tweener<float>.Setter setter, float finalValue, float duration)
-        {
-			Tween tween = new Tween();
-			tween.Add(initialValue, setter, finalValue, duration);
-			return tween;
+            SetEase(Ease.Linear);
         }
 
-		public static Tween To(Vector2 initialValue, Tweener<Vector2>.Setter setter, Vector2 finalValue, float duration)
-		{
-			Tween tween = new Tween();
-			tween.Add(initialValue, setter, finalValue, duration);
-			return tween;
-		}
-
-		public static Tween To(Vector3 initialValue, Tweener<Vector3>.Setter setter, Vector3 finalValue, float duration)
-		{
-			Tween tween = new Tween();
-			tween.Add(initialValue, setter, finalValue, duration);
-			return tween;
-		}
-
-		internal void Add(float initialValue, Tweener<float>.Setter setter, float finalValue, float duration)
-		{
-			Add(new FloatTweener(initialValue, setter, finalValue, duration));
-		}
-
-		internal void Add(Vector2 initialValue, Tweener<Vector2>.Setter setter, Vector2 finalValue, float duration)
-		{
-			Add(new Vector2Tweener(initialValue, setter, finalValue, duration));
-		}
-
-		internal void Add(Vector3 initialValue, Tweener<Vector3>.Setter setter, Vector3 finalValue, float duration)
-		{
-			Add(new Vector3Tweener(initialValue, setter, finalValue, duration));
-		}
-
-		internal void Add(ITweener tweener)
+        public static Tween To(float initialValue, Tweener<float>.Setter setter, float finalValue, float duration)
         {
-			aliveTweeners.Add(tweener);
-		}
+            InterpolationTween tween = new InterpolationTween();
+            tween.Add(new FloatTweener(initialValue, setter, finalValue, duration));
+            return tween;
+        }
 
-		public void SetEase(Ease ease)
+        public static Tween To(Vector2 initialValue, Tweener<Vector2>.Setter setter, Vector2 finalValue, float duration)
         {
-			easeFunction = PresetEaser.GetEaseDelegate(ease);
-		}
+            InterpolationTween tween = new InterpolationTween();
+            tween.Add(new Vector2Tweener(initialValue, setter, finalValue, duration));
+            return tween;
+        }
 
-		public void SetEase(AnimationCurve animationCurve)
+        public static Tween To(Vector3 initialValue, Tweener<Vector3>.Setter setter, Vector3 finalValue, float duration)
         {
-			easeFunction = AnimationCurveEaser.GetEaseDelegate(animationCurve);
-		}
+            InterpolationTween tween = new InterpolationTween();
+            tween.Add(new Vector3Tweener(initialValue, setter, finalValue, duration));
+            return tween;
+        }
 
-		public void Play()
+        public void Play()
         {
-			JuceTween.Play(this);
-		}
+            JuceTween.Play(this);
+        }
 
-		public void Init()
-		{
-			if(IsPlaying)
+        public void SetEase(Ease ease)
+        {
+            EaseFunction = PresetEaser.GetEaseDelegate(ease);
+        }
+
+        public void SetEase(AnimationCurve animationCurve)
+        {
+            EaseFunction = AnimationCurveEaser.GetEaseDelegate(animationCurve);
+        }
+
+        internal void Init()
+        {
+            if(IsPlaying)
             {
-				return;
+                return;
             }
 
-			IsPlaying = true;
-			IsCompleted = false;
+            IsPlaying = true;
 
-			for (int i = 0; i < aliveTweeners.Count; ++i)
-			{
-				aliveTweeners[i].SetEase(easeFunction);
-			}
-		}
+            InitInternal();
+        }
 
-		public void Complete()
-		{
-			if (!IsPlaying)
-			{
-				return;
-			}
-
-			for (int i = 0; i < aliveTweeners.Count; ++i)
-			{
-				aliveTweeners[i].Complete();
-			}
-
-			aliveTweeners.Clear();
-			tweenersToRemove.Clear();
-
-			IsPlaying = false;
-			IsCompleted = true;
-			IsKilled = false;
-			OnComplete?.Invoke();
-			OnCompleteOrKill?.Invoke();
-		}
-
-		public void Kill()
+        public void Complete()
         {
-			if (!IsPlaying)
-			{
-				return;
-			}
-
-			aliveTweeners.Clear();
-			tweenersToRemove.Clear();
-
-			IsPlaying = false;
-			IsCompleted = false;
-			IsKilled = true;
-			OnKill?.Invoke();
-			OnCompleteOrKill?.Invoke();
-		}
-
-		public void Update()
-        {
-			if(!IsPlaying)
+            if (!IsPlaying)
             {
-				return;
+                return;
             }
 
-			for(int i = 0; i < aliveTweeners.Count; ++i)
+            CompleteInternal();
+
+            IsPlaying = false;
+            IsCompleted = true;
+            IsKilled = false;
+
+            OnComplete?.Invoke();
+            OnCompleteOrKill?.Invoke();
+        }
+
+        public void Kill()
+        {
+            if (!IsPlaying)
             {
-				ITweener currTweener = aliveTweeners[i];
+                return;
+            }
 
-				currTweener.Update();
+            KillInternal();
 
-				if(!currTweener.IsPlaying)
-                {
-					tweenersToRemove.Add(currTweener);
-				}
-			}
+            IsPlaying = false;
+            IsCompleted = false;
+            IsKilled = true;
 
-			for(int i = 0; i < tweenersToRemove.Count; ++i)
+            OnKill?.Invoke();
+            OnCompleteOrKill?.Invoke();
+        }
+
+        internal void Update()
+        {
+            if(!IsPlaying)
             {
-				aliveTweeners.Remove(tweenersToRemove[i]);
-			}
+                return;
+            }
 
-			tweenersToRemove.Clear();
+            UpdateInternal();
+        }
 
-			if(aliveTweeners.Count == 0)
-            {
-				IsPlaying = false;
-				IsCompleted = true;
-				IsKilled = false;
-				OnComplete?.Invoke();
-				OnCompleteOrKill?.Invoke();
-			}
-		}
-	}
+        protected void MarkAsFinished()
+        {
+            IsPlaying = false;
+            IsCompleted = true;
+            IsKilled = false;
+
+            OnComplete?.Invoke();
+            OnCompleteOrKill?.Invoke();
+        }
+
+        protected virtual void InitInternal()
+        {
+
+        }
+
+        protected virtual void CompleteInternal()
+        {
+
+        }
+
+        protected virtual void KillInternal()
+        {
+
+        }
+
+        protected virtual void UpdateInternal()
+        {
+
+        }
+
+    }
 }

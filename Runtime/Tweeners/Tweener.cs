@@ -5,37 +5,52 @@ namespace Juce.Tween
 {
     public class Tweener<T> : ITweener
     {
-        private readonly T initialValue;
+        private T initialValue;
         private readonly T finalValue;
 
         private readonly float timeScale;
         private readonly float duration;
         private readonly IInterpolator<T> interpolator;
 
+        private readonly Getter getter;
         private readonly Setter setter;
 
         private EaseDelegate easeFunction;
         private float elapsedTime;
 
         public delegate void Setter(T value);
+        public delegate T Getter();
 
         public bool IsPlaying { get; protected set; }
+        public bool IsCompleted { get; protected set; }
 
-        internal Tweener(T initialValue, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
+        internal Tweener(Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
         {
-            this.initialValue = initialValue;
+            this.getter = getter;
             this.finalValue = finalValue;
             this.setter = setter;
             this.duration = duration;
             this.interpolator = interpolator;
 
             timeScale = 1.0f;
-            IsPlaying = true;
         }
 
         public void SetEase(EaseDelegate easeFunction)
         {
             this.easeFunction = easeFunction;
+        }
+
+        public void Init()
+        {
+            if(IsPlaying)
+            {
+                return;
+            }
+
+            IsPlaying = true;
+            IsCompleted = false;
+
+            this.initialValue = getter();
         }
 
         public void Update()
@@ -68,6 +83,7 @@ namespace Juce.Tween
             setter(finalValue);
 
             IsPlaying = false;
+            IsCompleted = true;
         }
     }
 }

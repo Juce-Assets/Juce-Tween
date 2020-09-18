@@ -22,6 +22,11 @@ namespace Juce.Tween
             {
                 ITweener currTweener = aliveTweeners[i];
 
+                if (!currTweener.IsPlaying && !currTweener.IsCompleted)
+                {
+                    currTweener.Init();
+                }
+
                 if (currTweener.IsPlaying)
                 {
                     currTweener.Complete();
@@ -44,9 +49,14 @@ namespace Juce.Tween
             {
                 ITweener currTweener = aliveTweeners[i];
 
+                if(!currTweener.IsPlaying)
+                {
+                    currTweener.Init();
+                }
+
                 currTweener.Update();
 
-                if(!currTweener.IsPlaying)
+                if(currTweener.IsCompleted)
                 {
                     tweenersToRemove.Add(currTweener);
                 }

@@ -5,7 +5,7 @@ namespace Juce.Tween
 {
     public abstract class Tween
     {
-        protected EaseDelegate EaseFunction;
+        public EaseDelegate EaseFunction { get; private set; }
 
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
@@ -20,24 +20,24 @@ namespace Juce.Tween
             SetEase(Ease.Linear);
         }
 
-        public static Tween To(float initialValue, Tweener<float>.Setter setter, float finalValue, float duration)
+        public static Tween To(Tweener<float>.Getter getter, Tweener<float>.Setter setter, float finalValue, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new FloatTweener(initialValue, setter, finalValue, duration));
+            tween.Add(new FloatTweener(getter, setter, finalValue, duration));
             return tween;
         }
 
-        public static Tween To(Vector2 initialValue, Tweener<Vector2>.Setter setter, Vector2 finalValue, float duration)
+        public static Tween To(Tweener<Vector2>.Getter getter, Tweener<Vector2>.Setter setter, Vector2 finalValue, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new Vector2Tweener(initialValue, setter, finalValue, duration));
+            tween.Add(new Vector2Tweener(getter, setter, finalValue, duration));
             return tween;
         }
 
-        public static Tween To(Vector3 initialValue, Tweener<Vector3>.Setter setter, Vector3 finalValue, float duration)
+        public static Tween To(Tweener<Vector3>.Getter getter, Tweener<Vector3>.Setter setter, Vector3 finalValue, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new Vector3Tweener(initialValue, setter, finalValue, duration));
+            tween.Add(new Vector3Tweener(getter, setter, finalValue, duration));
             return tween;
         }
 
@@ -48,12 +48,24 @@ namespace Juce.Tween
 
         public void SetEase(Ease ease)
         {
-            EaseFunction = PresetEaser.GetEaseDelegate(ease);
+            SetEase(PresetEaser.GetEaseDelegate(ease));
         }
 
         public void SetEase(AnimationCurve animationCurve)
         {
-            EaseFunction = AnimationCurveEaser.GetEaseDelegate(animationCurve);
+            SetEase(AnimationCurveEaser.GetEaseDelegate(animationCurve));
+        }
+
+        internal void SetEase(EaseDelegate easeFunction)
+        {
+            if (IsPlaying)
+            {
+                return;
+            }
+
+            EaseFunction = easeFunction;
+
+            SetEaseInternal(easeFunction);
         }
 
         internal void Init()
@@ -120,6 +132,11 @@ namespace Juce.Tween
 
             OnComplete?.Invoke();
             OnCompleteOrKill?.Invoke();
+        }
+
+        protected virtual void SetEaseInternal(EaseDelegate easeFunction)
+        {
+
         }
 
         protected virtual void InitInternal()

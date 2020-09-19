@@ -23,6 +23,7 @@ namespace Juce.Tween
                 }
 
                 return instance;
+
             }
         }
 

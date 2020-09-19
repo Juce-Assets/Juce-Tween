@@ -8,6 +8,14 @@ namespace Juce.Tween
         private readonly List<Tween> aliveTweens = new List<Tween>();
         private readonly List<Tween> tweensToRemove = new List<Tween>();
 
+        protected override void SetTimeScaleInternal(float timeScale)
+        {
+            for (int i = 0; i < aliveTweens.Count; ++i)
+            {
+                aliveTweens[i].SetTimeScale(timeScale);
+            }
+        }
+
         protected override void SetEaseInternal(EaseDelegate easeFunction)
         {
             for (int i = 0; i < aliveTweens.Count; ++i)

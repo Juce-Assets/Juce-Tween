@@ -10,6 +10,19 @@ namespace Juce.Tween
         private Tween lastAppendedTween;
         private GroupTween lastGroupTween;
 
+        protected override void SetTimeScaleInternal(float timeScale)
+        {
+            for (int i = 0; i < aliveTweens.Count; ++i)
+            {
+                aliveTweens[i].SetTimeScale(timeScale);
+            }
+
+            if (lastAppendedTween != null)
+            {
+                lastAppendedTween.SetTimeScale(timeScale);
+            }
+        }
+
         protected override void SetEaseInternal(EaseDelegate easeFunction)
         {
             for (int i = 0; i < aliveTweens.Count; ++i)

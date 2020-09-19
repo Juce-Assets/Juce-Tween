@@ -130,6 +130,16 @@ namespace Juce.Tween
             lastGroupTween.Add(tween);
         }
 
+        public void AppendCallback(Action action)
+        {
+            Append(new CallbackTween(action));
+        }
+
+        public void JoinCallback(Action action)
+        {
+            Join(new CallbackTween(action));
+        }
+
         public void AppendWaitTime(float time)
         {
             Append(new WaitTimeTween(time));

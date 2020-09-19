@@ -25,6 +25,33 @@ public static class MaterialExtensions
         return tween;
     }
 
+    public static Tween TweenColorAlpha(this Material material, float to, float duration)
+    {
+        float to255 = to * 255.0f;
+        Tween tween = Tween.To(() => material.color.a, x => material.color =
+            ColorUtils.ChangeAlpha(material.color, x), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
+    public static Tween TweenColorAlpha(this Material material, float to, string property, float duration)
+    {
+        float to255 = to * 255.0f;
+        Tween tween = Tween.To(() => material.GetColor(property).a, x => material.SetColor(property,
+            ColorUtils.ChangeAlpha(material.GetColor(property), x)), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
+    public static Tween TweenColorAlpha(this Material material, float to, int propertyID, float duration)
+    {
+        float to255 = to * 255.0f;
+        Tween tween = Tween.To(() => material.GetColor(propertyID).a, x => material.SetColor(propertyID,
+            ColorUtils.ChangeAlpha(material.GetColor(propertyID), x)), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
     public static Tween TweenFloat(this Material material, float to, string property, float duration)
     {
         Tween tween = Tween.To(() => material.GetFloat(property), x => material.SetFloat(property, x), to, duration);

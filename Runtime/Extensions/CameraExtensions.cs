@@ -18,6 +18,15 @@ public static class CameraExtensions
         return tween;
     }
 
+    public static Tween TweenBackgroundColorAlpha(this Camera camera, float to, float duration)
+    {
+        float to255 = to * 255.0f;
+        Tween tween = Tween.To(() => camera.backgroundColor.a, x => camera.backgroundColor = 
+            ColorUtils.ChangeAlpha(camera.backgroundColor, x), to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
     public static Tween TweenFarClipPlane(this Camera camera, float to, float duration)
     {
         Tween tween = Tween.To(() => camera.farClipPlane, x => camera.farClipPlane = x, to, duration);

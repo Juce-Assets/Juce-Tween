@@ -1,9 +1,11 @@
 {
-    "name": "Juce.Tween",
+    "name": "juce.tween.editor",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:1d2fff02b94337c4a9c3f4f83dfe63b0"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

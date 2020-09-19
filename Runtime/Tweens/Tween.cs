@@ -34,6 +34,20 @@ namespace Juce.Tween
             JuceTween.Play(this);
         }
 
+        public void SetTarget(object target)
+        {
+            Target = target;
+
+            if (target != null)
+            {
+                HasTarget = true;
+            }
+            else
+            {
+                HasTarget = false;
+            }
+        }
+
         public void SetTimeScale(float set)
         {
             TimeScale = set;
@@ -63,20 +77,6 @@ namespace Juce.Tween
             EaseFunction = easeFunction;
 
             SetEaseInternal(easeFunction);
-        }
-
-        internal void SetTarget(object target)
-        {
-            Target = target;
-
-            if (target != null)
-            {
-                HasTarget = true;
-            }
-            else
-            {
-                HasTarget = false;
-            }
         }
 
         internal void Init()

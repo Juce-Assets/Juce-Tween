@@ -5,6 +5,14 @@ namespace Juce.Tween
 {
     public partial class Tween
     {
+        public static Tween To(Tweener<int>.Getter getter, Tweener<int>.Setter setter,
+            int finalValue, float duration)
+        {
+            InterpolationTween tween = new InterpolationTween();
+            tween.Add(new IntTweener(getter, setter, finalValue, duration));
+            return tween;
+        }
+
         public static Tween To(Tweener<float>.Getter getter, Tweener<float>.Setter setter,
             float finalValue, float duration)
         {

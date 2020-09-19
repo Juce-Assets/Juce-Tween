@@ -2,7 +2,7 @@
 using UnityEngine;
 using Juce.Tween;
 
-public static class SpriteRendererExtensions
+public static class JuceTweenSpriteRendererExtensions
 {
     public static Tween TweenColor(this SpriteRenderer spriteRenderer, Color to, float duration)
     {

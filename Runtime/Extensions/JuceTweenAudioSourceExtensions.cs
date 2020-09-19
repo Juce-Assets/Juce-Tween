@@ -2,7 +2,7 @@
 using UnityEngine;
 using Juce.Tween;
 
-public static class AudioSourceExtensions
+public static class JuceTweenAudioSourceExtensions
 {
     public static Tween TweenVolume(this AudioSource audioSource, float to, float duration)
     {

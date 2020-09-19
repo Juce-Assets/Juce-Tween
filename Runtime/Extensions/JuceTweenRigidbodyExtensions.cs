@@ -2,7 +2,7 @@
 using UnityEngine;
 using Juce.Tween;
 
-public static class RigidbodyExtensions
+public static class JuceTweenRigidbodyExtensions
 {
     public static Tween TweenPosition(this Rigidbody rigidbody, Vector3 to, float duration)
     {

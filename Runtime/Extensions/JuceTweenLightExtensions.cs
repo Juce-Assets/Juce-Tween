@@ -2,7 +2,7 @@
 using UnityEngine;
 using Juce.Tween;
 
-public static class LightExtensions
+public static class JuceTweenLightExtensions
 {
     public static Tween TweenColor(this Light light, Color to, float duration)
     {

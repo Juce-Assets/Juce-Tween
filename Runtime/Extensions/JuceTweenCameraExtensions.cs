@@ -2,7 +2,7 @@
 using UnityEngine;
 using Juce.Tween;
 
-public static class CameraExtensions
+public static class JuceTweenCameraExtensions
 {
     public static Tween TweenAspect(this Camera camera, float to, float duration)
     {

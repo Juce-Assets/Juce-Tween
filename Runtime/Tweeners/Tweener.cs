@@ -12,20 +12,23 @@ namespace Juce.Tween
         private readonly float duration;
         private readonly IInterpolator<T> interpolator;
 
+        private readonly Validate validate;
         private readonly Getter getter;
         private readonly Setter setter;
 
         private EaseDelegate easeFunction;
         private float elapsedTime;
 
+        public delegate bool Validate();
         public delegate void Setter(T value);
         public delegate T Getter();
 
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
 
-        internal Tweener(Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
+        internal Tweener(Validate validate, Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
         {
+            this.validate = validate;
             this.getter = getter;
             this.finalValue = finalValue;
             this.setter = setter;
@@ -47,16 +50,29 @@ namespace Juce.Tween
                 return;
             }
 
-            IsPlaying = true;
-            IsCompleted = false;
+            if (!TryValidate())
+            {
+                Complete();
+            }
+            else
+            {
+                IsPlaying = true;
+                IsCompleted = false;
 
-            this.initialValue = getter();
+                this.initialValue = getter();
+            }
         }
 
         public void Update()
         {
             if (!IsPlaying)
             {
+                return;
+            }
+
+            if(!TryValidate())
+            {
+                Complete();
                 return;
             }
 
@@ -80,10 +96,23 @@ namespace Juce.Tween
 
         public void Complete()
         {
-            setter(finalValue);
+            if (TryValidate())
+            {
+                setter(finalValue);
+            }
 
             IsPlaying = false;
             IsCompleted = true;
+        }
+
+        private bool TryValidate()
+        {
+            if(validate == null)
+            {
+                return true;
+            }
+
+            return validate();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Juce.Tween
             {
                 ITweener currTweener = aliveTweeners[i];
 
-                if (!currTweener.IsPlaying && !currTweener.IsCompleted)
+                if (!currTweener.IsPlaying)
                 {
                     currTweener.Init();
                 }

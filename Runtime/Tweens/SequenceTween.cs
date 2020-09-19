@@ -16,6 +16,11 @@ namespace Juce.Tween
             {
                 aliveTweens[i].SetEase(easeFunction);
             }
+
+            if (lastAppendedTween != null)
+            {
+                lastAppendedTween.SetEase(easeFunction);
+            }
         }
 
         protected override void InitInternal()
@@ -32,7 +37,7 @@ namespace Juce.Tween
             {
                 Tween currTween = aliveTweens[i];
 
-                if(!currTween.IsPlaying && !currTween.IsCompleted && !currTween.IsKilled)
+                if(!currTween.IsPlaying)
                 {
                     currTween.Init();
                 }
@@ -48,6 +53,16 @@ namespace Juce.Tween
 
         protected override void KillInternal()
         {
+            for (int i = 0; i < aliveTweens.Count; ++i)
+            {
+                Tween currTween = aliveTweens[i];
+
+                if (currTween.IsPlaying)
+                {
+                    currTween.Kill();
+                }
+            }
+
             aliveTweens.Clear();
         }
 
@@ -95,6 +110,7 @@ namespace Juce.Tween
             if (lastGroupTween == null)
             {
                 lastGroupTween = new GroupTween();
+                lastGroupTween.Add(lastAppendedTween);
                 aliveTweens.Add(lastGroupTween);
             }
 

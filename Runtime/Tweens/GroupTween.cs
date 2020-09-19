@@ -39,6 +39,16 @@ namespace Juce.Tween
 
         protected override void KillInternal()
         {
+            for (int i = 0; i < aliveTweens.Count; ++i)
+            {
+                Tween currTween = aliveTweens[i];
+
+                if (currTween.IsPlaying)
+                {
+                    currTween.Kill();
+                }
+            }
+
             aliveTweens.Clear();
             tweensToRemove.Clear();
         }

@@ -5,12 +5,15 @@ namespace Juce.Tween
 {
     public abstract partial class Tween
     {
-        private event Action<float> onTimeScaleChange;
-        private event Action onStart;
-        private event Action onUpdate;
-        private event Action onComplete;
-        private event Action onKill;
-        private event Action onCompleteOrKill;
+        private Action<float> onTimeScaleChange;
+        private Action onStart;
+        private Action onUpdate;
+        private Action onComplete;
+        private Action onKill;
+        private Action onCompleteOrKill;
+
+        internal bool HasTarget { get; private set; }
+        internal object Target { get; private set; }
 
         public EaseDelegate EaseFunction { get; private set; }
 
@@ -60,6 +63,20 @@ namespace Juce.Tween
             EaseFunction = easeFunction;
 
             SetEaseInternal(easeFunction);
+        }
+
+        internal void SetTarget(object target)
+        {
+            Target = target;
+
+            if (target != null)
+            {
+                HasTarget = true;
+            }
+            else
+            {
+                HasTarget = false;
+            }
         }
 
         internal void Init()

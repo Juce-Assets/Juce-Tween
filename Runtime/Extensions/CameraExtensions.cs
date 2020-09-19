@@ -6,33 +6,57 @@ public static class CameraExtensions
 {
     public static Tween TweenAspect(this Camera camera, float to, float duration)
     {
-        return Tween.To(() => camera.aspect, x => camera.aspect = x, to, duration,
-        () =>
-        {
-            if (camera == null)
-            {
-                LogUtils.LogValidateError(typeof(Camera));
-
-                return false;
-            }
-
-            return true;
-        });
+        Tween tween = Tween.To(() => camera.aspect, x => camera.aspect = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
     }
 
-    public static Tween TweenBackgroundColour(this Camera camera, float to, float duration)
+    public static Tween TweenBackgroundColor(this Camera camera, Color to, float duration)
     {
-        return Tween.To(() => camera.backgroundColor, x => camera.aspect = x, to, duration,
-        () =>
-        {
-            if (camera == null)
-            {
-                LogUtils.LogValidateError(typeof(Camera));
+        Tween tween = Tween.To(() => camera.backgroundColor, x => camera.backgroundColor = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
 
-                return false;
-            }
+    public static Tween TweenFarClipPlane(this Camera camera, float to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.farClipPlane, x => camera.farClipPlane = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
 
-            return true;
-        });
+    public static Tween TweenNearClipPlane(this Camera camera, float to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.nearClipPlane, x => camera.nearClipPlane = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
+    public static Tween TweenFieldOfView(this Camera camera, float to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.fieldOfView, x => camera.fieldOfView = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
+    public static Tween TweenOrthoSize(this Camera camera, float to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
+    public static Tween TweenRect(this Camera camera, Rect to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.rect, x => camera.rect = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
+    public static Tween TweenPixelRect(this Camera camera, Rect to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.pixelRect, x => camera.pixelRect = x, to, duration);
+        tween.SetTarget(camera);
+        return tween;
     }
 }

@@ -129,5 +129,15 @@ namespace Juce.Tween
 
             lastGroupTween.Add(tween);
         }
+
+        public void AppendWaitTime(float time)
+        {
+            Append(new WaitTimeTween(time));
+        }
+
+        public void JoinWaitTime(float time)
+        {
+            Join(new WaitTimeTween(time));
+        }
     }
 }

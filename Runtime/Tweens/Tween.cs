@@ -6,15 +6,20 @@ namespace Juce.Tween
 {
     public abstract class Tween
     {
+        private event Action<float> onTimeScaleChange;
+        private event Action onStart;
+        private event Action onUpdate;
+        private event Action onComplete;
+        private event Action onKill;
+        private event Action onCompleteOrKill;
+
         public EaseDelegate EaseFunction { get; private set; }
+
+        public float TimeScale { get; private set; }
 
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
         public bool IsKilled { get; protected set; }
-
-        public event Action OnComplete;
-        public event Action OnKill;
-        public event Action OnCompleteOrKill;
 
         public Tween()
         {
@@ -50,6 +55,15 @@ namespace Juce.Tween
             JuceTween.Play(this);
         }
 
+        public void SetTimeScale(float set)
+        {
+            TimeScale = set;
+
+            SetTimeScaleInternal(set);
+
+            onTimeScaleChange?.Invoke(set);
+        }
+
         public void SetEase(Ease ease)
         {
             SetEase(PresetEaser.GetEaseDelegate(ease));
@@ -81,6 +95,8 @@ namespace Juce.Tween
 
             IsPlaying = true;
 
+            onStart?.Invoke();
+
             InitInternal();
         }
 
@@ -97,8 +113,8 @@ namespace Juce.Tween
             IsCompleted = true;
             IsKilled = false;
 
-            OnComplete?.Invoke();
-            OnCompleteOrKill?.Invoke();
+            onComplete?.Invoke();
+            onCompleteOrKill?.Invoke();
         }
 
         public void Kill()
@@ -114,8 +130,38 @@ namespace Juce.Tween
             IsCompleted = false;
             IsKilled = true;
 
-            OnKill?.Invoke();
-            OnCompleteOrKill?.Invoke();
+            onKill?.Invoke();
+            onCompleteOrKill?.Invoke();
+        }
+
+        public void OnTimeScaleChange(Action<float> action)
+        {
+            onTimeScaleChange += action;
+        }
+
+        public void OnStart(Action action)
+        {
+            onStart += action;
+        }
+
+        public void OnUpdate(Action action)
+        {
+            onUpdate += action;
+        }
+
+        public void OnComplete(Action action)
+        {
+            onComplete += onComplete;
+        }
+
+        public void OnKill(Action action)
+        {
+            onKill += action;
+        }
+
+        public void OnCompleteOrKill(Action action)
+        {
+            onCompleteOrKill += action;
         }
 
         internal void Update()
@@ -124,6 +170,8 @@ namespace Juce.Tween
             {
                 return;
             }
+
+            onUpdate?.Invoke();
 
             UpdateInternal();
         }
@@ -134,8 +182,13 @@ namespace Juce.Tween
             IsCompleted = true;
             IsKilled = false;
 
-            OnComplete?.Invoke();
-            OnCompleteOrKill?.Invoke();
+            onComplete?.Invoke();
+            onCompleteOrKill?.Invoke();
+        }
+
+        protected virtual void SetTimeScaleInternal(float timeScale)
+        {
+
         }
 
         protected virtual void SetEaseInternal(EaseDelegate easeFunction)

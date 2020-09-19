@@ -8,7 +8,6 @@ namespace Juce.Tween
         private T initialValue;
         private readonly T finalValue;
 
-        private readonly float timeScale;
         private readonly float duration;
         private readonly IInterpolator<T> interpolator;
 
@@ -23,6 +22,8 @@ namespace Juce.Tween
         public delegate void Setter(T value);
         public delegate T Getter();
 
+        public float TimeScale { get; set; }
+
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
 
@@ -35,7 +36,7 @@ namespace Juce.Tween
             this.duration = duration;
             this.interpolator = interpolator;
 
-            timeScale = 1.0f;
+            TimeScale = 1.0f;
         }
 
         public void SetEase(EaseDelegate easeFunction)
@@ -76,7 +77,7 @@ namespace Juce.Tween
                 return;
             }
 
-            float dt = Time.deltaTime * JuceTween.TimeScale * timeScale;
+            float dt = Time.deltaTime * JuceTween.TimeScale * TimeScale;
 
             elapsedTime += dt;
 

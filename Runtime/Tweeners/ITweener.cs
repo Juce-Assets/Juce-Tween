@@ -5,6 +5,7 @@ namespace Juce.Tween
 {
     internal interface ITweener
     {
+        float TimeScale { get; set; }
         bool IsPlaying { get; }
         bool IsCompleted { get; }
         void SetEase(EaseDelegate easeFunction);

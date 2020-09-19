@@ -49,7 +49,9 @@ namespace Juce.Tween
             {
                 ITweener currTweener = aliveTweeners[i];
 
-                if(!currTweener.IsPlaying)
+                currTweener.TimeScale = TimeScale;
+
+                if (!currTweener.IsPlaying)
                 {
                     currTweener.Init();
                 }

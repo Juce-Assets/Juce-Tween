@@ -1,5 +1,5 @@
 {
-    "name": "juce.tween.editor",
+    "name": "Juce.Tween.Editor",
     "references": [
         "GUID:1d2fff02b94337c4a9c3f4f83dfe63b0"
     ],

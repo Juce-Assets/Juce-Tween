@@ -79,7 +79,7 @@ namespace Juce.Tween
 
         public void Add(ITweener tweener)
         {
-            if (tweener == null) throw new ArgumentNullException($"Tried to Add a null {nameof(ITweener)} on {nameof(InterpolationTween)}");
+            if (tweener == null) throw new ArgumentNullException($"Tried to {nameof(Add)} a null {nameof(ITweener)} on {nameof(InterpolationTween)}");
 
             aliveTweeners.Add(tweener);
         }

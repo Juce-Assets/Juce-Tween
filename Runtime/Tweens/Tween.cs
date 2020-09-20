@@ -64,14 +64,16 @@ namespace Juce.Tween
 
         public void SetEase(AnimationCurve animationCurve)
         {
-            if (animationCurve == null) throw new ArgumentNullException($"Tried to SetEase with a null {nameof(AnimationCurve)} on {nameof(Tween)}");
+            if (animationCurve == null) throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
+                $"with a null {nameof(AnimationCurve)} on {nameof(Tween)}");
 
             SetEase(AnimationCurveEaser.GetEaseDelegate(animationCurve));
         }
 
         internal void SetEase(EaseDelegate easeFunction)
         {
-            if (easeFunction == null) throw new ArgumentNullException($"Tried to SetEase with a null {nameof(EaseDelegate)} on {nameof(Tween)}");
+            if (easeFunction == null) throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
+                $"with a null {nameof(EaseDelegate)} on {nameof(Tween)}");
 
             if (IsPlaying)
             {

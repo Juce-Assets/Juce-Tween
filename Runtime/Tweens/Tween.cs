@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Juce.Tween
 {
-    public abstract partial class Tween
+    public abstract partial class Tween 
     {
         private Action<float> onTimeScaleChange;
         private Action onStart;
@@ -23,7 +23,7 @@ namespace Juce.Tween
         public bool IsCompleted { get; protected set; }
         public bool IsKilled { get; protected set; }
 
-        public Tween()
+        internal Tween()
         {
             SetTimeScale(1);
             SetEase(Ease.Linear);
@@ -64,11 +64,15 @@ namespace Juce.Tween
 
         public void SetEase(AnimationCurve animationCurve)
         {
+            if (animationCurve == null) throw new ArgumentNullException($"Tried to SetEase with a null {nameof(AnimationCurve)} on {nameof(Tween)}");
+
             SetEase(AnimationCurveEaser.GetEaseDelegate(animationCurve));
         }
 
         internal void SetEase(EaseDelegate easeFunction)
         {
+            if (easeFunction == null) throw new ArgumentNullException($"Tried to SetEase with a null {nameof(EaseDelegate)} on {nameof(Tween)}");
+
             if (IsPlaying)
             {
                 return;
@@ -129,31 +133,61 @@ namespace Juce.Tween
 
         public void OnTimeScaleChange(Action<float> action)
         {
+            if(action == null)
+            {
+                return;
+            }
+
             onTimeScaleChange += action;
         }
 
         public void OnStart(Action action)
         {
+            if (action == null)
+            {
+                return;
+            }
+
             onStart += action;
         }
 
         public void OnUpdate(Action action)
         {
+            if (action == null)
+            {
+                return;
+            }
+
             onUpdate += action;
         }
 
         public void OnComplete(Action action)
         {
+            if (action == null)
+            {
+                return;
+            }
+
             onComplete += action;
         }
 
         public void OnKill(Action action)
         {
+            if (action == null)
+            {
+                return;
+            }
+
             onKill += action;
         }
 
         public void OnCompleteOrKill(Action action)
         {
+            if (action == null)
+            {
+                return;
+            }
+
             onCompleteOrKill += action;
         }
 

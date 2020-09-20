@@ -24,11 +24,6 @@ namespace Juce.Tween
             }
         }
 
-        protected override void InitInternal()
-        {
-    
-        }
-
         protected override void CompleteInternal()
         {
             for (int i = 0; i < aliveTweens.Count; ++i)
@@ -73,7 +68,14 @@ namespace Juce.Tween
 
         public void Add(Tween tween)
         {
-            if(IsPlaying)
+            if (tween == null) throw new ArgumentNullException($"Tried to Add a null {nameof(Tween)} on {nameof(GroupTween)}");
+
+            if (IsPlaying)
+            {
+                return;
+            }
+
+            if (tween.IsPlaying)
             {
                 return;
             }

@@ -85,13 +85,20 @@ namespace Juce.Tween
 
             if (finished)
             {
-                //MarkAsFinished();
+                MarkAsFinished();
             }
         }
 
         public void Append(Tween tween)
         {
+            if (tween == null) throw new ArgumentNullException($"Tried to Append a null {nameof(Tween)} on {nameof(SequenceTween)}");
+
             if (IsPlaying)
+            {
+                return;
+            }
+
+            if(tween.IsPlaying)
             {
                 return;
             }
@@ -108,7 +115,14 @@ namespace Juce.Tween
 
         public void Join(Tween tween)
         {
+            if (tween == null) throw new ArgumentNullException($"Tried to Join a null {nameof(Tween)} on {nameof(SequenceTween)}");
+
             if (IsPlaying)
+            {
+                return;
+            }
+
+            if (tween.IsPlaying)
             {
                 return;
             }

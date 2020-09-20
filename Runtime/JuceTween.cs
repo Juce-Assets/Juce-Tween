@@ -58,6 +58,8 @@ namespace Juce.Tween
 
         internal static void Play(Tween tween)
         {
+            if(tween == null) throw new ArgumentNullException($"Tried to play a null {nameof(Tween)} on {nameof(JuceTween)} instance");
+
             Instance.aliveTweens.Add(tween);
         }
 

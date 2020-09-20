@@ -1,8 +1,9 @@
-﻿using System;
+﻿
+#if JUCE_TWEEN_TEXT_MESH_PRO_EXTENSIONS
+
+using System;
 using UnityEngine;
 using Juce.Tween;
-
-#if JUCE_TWEEN_TEXT_MESH_PRO_EXTENSIONS
 
 using TMPro;
 
@@ -56,6 +57,11 @@ public static class JuceTweenTextMeshProExtensions
 
     public static Tween TweenCharColor(this TextMeshProUGUI textMeshProUGUI, int charIndex, Color to, float duration)
     {
+        if (textMeshProUGUI.textInfo.characterInfo.Length <= charIndex)
+        { 
+            throw new ArgumentNullException($"Char index was out of range at {nameof(TweenCharColor)}");
+        }
+
         TMP_CharacterInfo characterInfo = textMeshProUGUI.textInfo.characterInfo[charIndex];
 
         int meshIndex = characterInfo.materialReferenceIndex;
@@ -96,6 +102,11 @@ public static class JuceTweenTextMeshProExtensions
 
     public static Tween TweenCharColorAlpha(this TextMeshProUGUI textMeshProUGUI, int charIndex, float to, float duration)
     {
+        if (textMeshProUGUI.textInfo.characterInfo.Length <= charIndex)
+        {
+            throw new ArgumentNullException($"Char index was out of range at {nameof(TweenCharColorAlpha)}");
+        }
+
         float to255 = to * 255.0f;
 
         TMP_CharacterInfo characterInfo = textMeshProUGUI.textInfo.characterInfo[charIndex];
@@ -138,6 +149,11 @@ public static class JuceTweenTextMeshProExtensions
 
     public static Tween TweenCharTransform(this TextMeshProUGUI textMeshProUGUI, int charIndex, Matrix4x4 to, float duration)
     {
+        if (textMeshProUGUI.textInfo.characterInfo.Length <= charIndex)
+        {
+            throw new ArgumentNullException($"Char index was out of range at {nameof(TweenCharTransform)}");
+        }
+
         TMP_CharacterInfo characterInfo = textMeshProUGUI.textInfo.characterInfo[charIndex];
 
         int meshIndex = characterInfo.materialReferenceIndex;

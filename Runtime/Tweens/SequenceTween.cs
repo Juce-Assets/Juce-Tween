@@ -85,7 +85,7 @@ namespace Juce.Tween
 
             if (finished)
             {
-                MarkAsFinished();
+                //MarkAsFinished();
             }
         }
 

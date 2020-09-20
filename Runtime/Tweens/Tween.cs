@@ -144,7 +144,7 @@ namespace Juce.Tween
 
         public void OnComplete(Action action)
         {
-            onComplete += onComplete;
+            onComplete += action;
         }
 
         public void OnKill(Action action)
@@ -171,9 +171,13 @@ namespace Juce.Tween
 
         protected void MarkAsFinished()
         {
+            if (!IsPlaying)
+            {
+                return;
+            }
+
             IsPlaying = false;
             IsCompleted = true;
-            IsKilled = false;
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();

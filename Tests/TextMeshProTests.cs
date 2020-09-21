@@ -15,9 +15,9 @@ public class TextMeshProTests : MonoBehaviour
     {
         sequenceTween = new SequenceTween();
 
-        sequenceTween.Append(text.TweenCharScale(0, new Vector2(2, 2), 1));
-        sequenceTween.Append(text.TweenCharRotation(0, 60, 1));
-        sequenceTween.Append(text.TweenCharOffset(0, new Vector3(-10, 0, 0), 1));
+        //sequenceTween.Append(text.TweenCharScale(0, new Vector2(2, 2), 1));
+        //sequenceTween.Append(text.TweenCharRotation(0, 60, 1));
+        //sequenceTween.Append(text.TweenCharOffset(0, new Vector3(-10, 0, 0), 1));
         //sequenceTween.Append(text.TweenCharColor(0, Color.black, 1));
         //sequenceTween.Append(text.TweenCharColor(0, Color.white, 1));
         //sequenceTween.Append(text.TweenCharColorAlpha(0, 0, 1));

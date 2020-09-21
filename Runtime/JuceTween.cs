@@ -1,44 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Juce.Utils.Singletons;
 
 namespace Juce.Tween
 {
-    public class JuceTween : MonoBehaviour
+    public class JuceTween : AutoStartMonoSingleton<JuceTween>
     {
         private readonly List<Tween> aliveTweens = new List<Tween>();
         private readonly List<Tween> tweensToRemove = new List<Tween>();
 
         private float timeScale;
 
-        private static JuceTween instance;
-
-        public static JuceTween Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = CreateInstance();
-                }
-
-                return instance;
-
-            }
-        }
-
         public static float TimeScale
         {
             get { return Instance.timeScale; }
             set { Instance.timeScale = value; }
-        }
-
-        private static JuceTween CreateInstance()
-        {
-            GameObject juceTweenGameObject = new GameObject("JuceTween");
-            DontDestroyOnLoad(juceTweenGameObject);
-
-            return juceTweenGameObject.AddComponent<JuceTween>();
         }
 
         private void Awake()

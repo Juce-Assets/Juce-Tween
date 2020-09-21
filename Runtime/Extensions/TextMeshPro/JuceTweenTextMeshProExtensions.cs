@@ -1,5 +1,5 @@
 ﻿
-#if JUCE_TWEEN_TEXT_MESH_PRO_EXTENSIONS
+#if JUCE_TEXT_MESH_PRO_EXTENSIONS
 
 using System;
 using UnityEngine;

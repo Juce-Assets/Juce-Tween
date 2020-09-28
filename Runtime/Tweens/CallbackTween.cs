@@ -11,7 +11,7 @@ namespace Juce.Tween
             this.action = action;
         }
 
-        protected override void InitInternal()
+        protected override void StartInternal()
         {
             action?.Invoke();
 

@@ -162,27 +162,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 551397149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1946bcee023373f4da67196e1f1b784e, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ba7ae96f1b33e443bd1b9085420b148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animationCurve:
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    serializedVersion: 2
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -433,7 +418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1161185727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,15 +523,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fca056a3a312c52488c8d4b5f3aea213, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0dd0dc132df642459a12ed0c3d97a94, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 9.58, y: 7.2}
+  m_Size: {x: 6.12, y: 2.95}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1682805819
@@ -721,7 +706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1856908439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,26 +716,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1856908438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edb712d8de2a27e4893d17dad5b111f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 18989fc5c600b104688cf40f0b0044b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animationCurve:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.5847972
+      outSlope: 0.5847972
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
-    - time: 1
+      outWeight: 0.05231867
+    - serializedVersion: 3
+      time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0.63567626
+      outSlope: 0.63567626
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.058263958
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

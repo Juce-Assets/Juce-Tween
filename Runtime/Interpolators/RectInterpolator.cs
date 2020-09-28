@@ -16,5 +16,23 @@ namespace Juce.Tween
                 easeFunction(initialValue.height, finalValue.height, time)
                 );
         }
+
+        public Rect Subtract(Rect initialValue, Rect finalValue)
+        {
+            return new Rect(finalValue.x - initialValue.x,
+                            finalValue.y - initialValue.y,
+                            finalValue.width - initialValue.width,
+                            finalValue.height - initialValue.height
+                            );
+        }
+
+        public Rect Add(Rect initialValue, Rect finalValue)
+        {
+            return new Rect(finalValue.x + initialValue.x,
+                            finalValue.y + initialValue.y,
+                            finalValue.width + initialValue.width,
+                            finalValue.height + initialValue.height
+                            );
+        }
     }
 }

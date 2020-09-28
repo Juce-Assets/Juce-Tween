@@ -11,7 +11,7 @@ namespace Juce.Tween
             {
                 Tween currTweener = aliveTweens[i];
 
-                bool hasValidTarget = HasValidTarget(currTweener);
+                bool hasValidTarget = currTweener.HasValidTarget();
 
                 if (!hasValidTarget)
                 {
@@ -22,18 +22,21 @@ namespace Juce.Tween
                 }
                 else
                 {
-                    if (!currTweener.IsPlaying)
+                    if (currTweener.IsActive)
                     {
-                        currTweener.Init();
-                    }
+                        if (!currTweener.IsPlaying)
+                        {
+                            currTweener.Start();
+                        }
 
-                    if (currTweener.IsPlaying)
-                    {
-                        currTweener.Update();
+                        if (currTweener.IsPlaying)
+                        {
+                            currTweener.Update();
+                        }
                     }
                 }
 
-                if (currTweener.IsCompleted || currTweener.IsKilled || !hasValidTarget)
+                if (!currTweener.IsActive || !hasValidTarget)
                 {
                     tweensToRemove.Add(currTweener);
                 }
@@ -46,7 +49,7 @@ namespace Juce.Tween
 
             tweensToRemove.Clear();
 
-            if(aliveTweens.Count == 0)
+            if (aliveTweens.Count == 0)
             {
                 return true;
             }
@@ -54,16 +57,63 @@ namespace Juce.Tween
             return false;
         }
 
-        internal static bool UpdateSequential(List<Tween> aliveTweens)
+        internal static bool UpdateSimultaneous(List<Tween> allTweens, int tweensLeftToFinish)
         {
-            if(aliveTweens.Count == 0)
+            tweensLeftToFinish = 0;
+
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                Tween currTweener = allTweens[i];
+
+                bool hasValidTarget = currTweener.HasValidTarget();
+
+                if (!hasValidTarget)
+                {
+                    if (currTweener.IsPlaying)
+                    {
+                        currTweener.Kill();
+                    }
+                }
+                else
+                {
+                    if (currTweener.IsActive)
+                    {
+                        if (!currTweener.IsPlaying)
+                        {
+                            currTweener.Start();
+                        }
+
+                        if (currTweener.IsPlaying)
+                        {
+                            currTweener.Update();
+                        }
+                    }
+                }
+
+                if (currTweener.IsActive && hasValidTarget)
+                {
+                    ++tweensLeftToFinish;
+                }
+            }
+
+            if (tweensLeftToFinish == 0)
             {
                 return true;
             }
 
-            Tween currTweener = aliveTweens[0];
+            return false;
+        }
 
-            bool hasValidTarget = HasValidTarget(currTweener);
+        internal static bool UpdateSequential(List<Tween> allTweens, ref int currTweenIndex)
+        {
+            if (allTweens.Count <= currTweenIndex)
+            {
+                return true;
+            }
+
+            Tween currTweener = allTweens[currTweenIndex];
+
+            bool hasValidTarget = currTweener.HasValidTarget();
 
             if (!hasValidTarget)
             {
@@ -74,43 +124,26 @@ namespace Juce.Tween
             }
             else
             {
-                if (!currTweener.IsPlaying)
+                if (currTweener.IsActive)
                 {
-                    currTweener.Init();
-                }
+                    if (!currTweener.IsPlaying)
+                    {
+                        currTweener.Start();
+                    }
 
-                if (currTweener.IsPlaying)
-                {
-                    currTweener.Update();
+                    if (currTweener.IsPlaying)
+                    {
+                        currTweener.Update();
+                    }
                 }
             }
 
-            if (currTweener.IsCompleted || currTweener.IsKilled || !hasValidTarget)
+            if (!currTweener.IsActive || !hasValidTarget)
             {
-                aliveTweens.RemoveAt(0);
+                ++currTweenIndex;
             }
 
             return false;
-        }
-
-        internal static bool HasValidTarget(Tween tween)
-        {
-            if(tween.HasTarget)
-            {
-                if(tween.Target is UnityEngine.Object)
-                {
-                    if(((UnityEngine.Object)tween.Target) == null)
-                    {
-                        return false;
-                    }
-                }
-                else if(tween.Target == null)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

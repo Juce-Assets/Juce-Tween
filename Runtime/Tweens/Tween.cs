@@ -3,25 +3,29 @@ using UnityEngine;
 
 namespace Juce.Tween
 {
-    public abstract partial class Tween 
+    public abstract partial class Tween
     {
-        private Action<float> onTimeScaleChange;
-        private Action onStart;
-        private Action onUpdate;
-        private Action onComplete;
-        private Action onKill;
-        private Action onCompleteOrKill;
-
         internal bool HasTarget { get; private set; }
         internal object Target { get; private set; }
+        internal bool IsNested { get; private set; }
 
         public EaseDelegate EaseFunction { get; private set; }
 
         public float TimeScale { get; private set; }
 
+        public bool IsActive { get; internal set; }
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
         public bool IsKilled { get; protected set; }
+        public bool IsCompletedOrKilled => IsCompleted || IsKilled;
+
+        public event Action<float> onTimeScaleChange;
+        public event Action onPlay;
+        public event Action onStart;
+        public event Action onUpdate;
+        public event Action onComplete;
+        public event Action onKill;
+        public event Action onCompleteOrKill;
 
         internal Tween()
         {
@@ -29,9 +33,9 @@ namespace Juce.Tween
             SetEase(Ease.Linear);
         }
 
-        public void Play()
+        internal void SetNested()
         {
-            JuceTween.Play(this);
+            IsNested = true;
         }
 
         public void SetTarget(object target)
@@ -46,6 +50,26 @@ namespace Juce.Tween
             {
                 HasTarget = false;
             }
+        }
+
+        public bool HasValidTarget()
+        {
+            if (HasTarget)
+            {
+                if (Target is UnityEngine.Object)
+                {
+                    if (((UnityEngine.Object)Target) == null)
+                    {
+                        return false;
+                    }
+                }
+                else if (Target == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void SetTimeScale(float set)
@@ -85,23 +109,62 @@ namespace Juce.Tween
             SetEaseInternal(easeFunction);
         }
 
-        internal void Init()
+        public void Play()
         {
-            if(IsPlaying)
+            JuceTween.Play(this);
+        }
+
+        internal void Activate()
+        {
+            if (IsActive)
+            {
+                return;
+            }
+
+            IsActive = true;
+            IsPlaying = false;
+            IsCompleted = false;
+            IsKilled = false;
+
+            onPlay?.Invoke();
+
+            PlayInternal();
+        }
+
+        internal void Start()
+        {
+            if (!IsActive)
+            {
+                return;
+            }
+
+            if (IsPlaying)
             {
                 return;
             }
 
             IsPlaying = true;
+            IsCompleted = false;
+            IsKilled = false;
 
             onStart?.Invoke();
 
-            InitInternal();
+            StartInternal();
         }
 
         public void Complete()
         {
+            if (!IsActive)
+            {
+                return;
+            }
+
             if (!IsPlaying)
+            {
+                return;
+            }
+
+            if (!HasValidTarget())
             {
                 return;
             }
@@ -111,6 +174,7 @@ namespace Juce.Tween
             IsPlaying = false;
             IsCompleted = true;
             IsKilled = false;
+            IsActive = false;
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -118,7 +182,17 @@ namespace Juce.Tween
 
         public void Kill()
         {
+            if (!IsActive)
+            {
+                return;
+            }
+
             if (!IsPlaying)
+            {
+                return;
+            }
+
+            if (!HasValidTarget())
             {
                 return;
             }
@@ -128,19 +202,40 @@ namespace Juce.Tween
             IsPlaying = false;
             IsCompleted = false;
             IsKilled = true;
+            IsActive = false;
 
             onKill?.Invoke();
             onCompleteOrKill?.Invoke();
         }
 
+        public void Reset()
+        {
+            if (!HasValidTarget())
+            {
+                return;
+            }
+
+            ResetInternal();
+        }
+
         public void OnTimeScaleChange(Action<float> action)
         {
-            if(action == null)
+            if (action == null)
             {
                 return;
             }
 
             onTimeScaleChange += action;
+        }
+
+        public void OnPlay(Action action)
+        {
+            if (action == null)
+            {
+                return;
+            }
+
+            onPlay = action;
         }
 
         public void OnStart(Action action)
@@ -150,7 +245,7 @@ namespace Juce.Tween
                 return;
             }
 
-            onStart += action;
+            onStart = action;
         }
 
         public void OnUpdate(Action action)
@@ -160,7 +255,7 @@ namespace Juce.Tween
                 return;
             }
 
-            onUpdate += action;
+            onUpdate = action;
         }
 
         public void OnComplete(Action action)
@@ -170,7 +265,7 @@ namespace Juce.Tween
                 return;
             }
 
-            onComplete += action;
+            onComplete = action;
         }
 
         public void OnKill(Action action)
@@ -180,7 +275,7 @@ namespace Juce.Tween
                 return;
             }
 
-            onKill += action;
+            onKill = action;
         }
 
         public void OnCompleteOrKill(Action action)
@@ -190,12 +285,12 @@ namespace Juce.Tween
                 return;
             }
 
-            onCompleteOrKill += action;
+            onCompleteOrKill = action;
         }
 
         internal void Update()
         {
-            if(!IsPlaying)
+            if (!IsPlaying)
             {
                 return;
             }
@@ -214,6 +309,7 @@ namespace Juce.Tween
 
             IsPlaying = false;
             IsCompleted = true;
+            IsActive = false;
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -229,7 +325,12 @@ namespace Juce.Tween
 
         }
 
-        protected virtual void InitInternal()
+        protected virtual void PlayInternal()
+        {
+
+        }
+
+        protected virtual void StartInternal()
         {
 
         }
@@ -249,5 +350,9 @@ namespace Juce.Tween
 
         }
 
+        protected virtual void ResetInternal()
+        {
+
+        }
     }
 }

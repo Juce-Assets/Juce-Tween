@@ -6,7 +6,11 @@ namespace Juce.Tween
     public class Tweener<T> : ITweener
     {
         private T initialValue;
-        private readonly T finalValue;
+        private T finalValue;
+
+        private bool firstTime;
+        private T firstTimeInitialValue;
+        private T firstTimeFinalValue;
 
         private readonly float duration;
         private readonly IInterpolator<T> interpolator;
@@ -33,6 +37,8 @@ namespace Juce.Tween
             this.duration = duration;
             this.interpolator = interpolator;
 
+            firstTime = true;
+
             TimeScale = 1.0f;
         }
 
@@ -43,7 +49,7 @@ namespace Juce.Tween
 
         public void Init()
         {
-            if(IsPlaying)
+            if (IsPlaying)
             {
                 return;
             }
@@ -51,7 +57,17 @@ namespace Juce.Tween
             IsPlaying = true;
             IsCompleted = false;
 
+            elapsedTime = 0.0f;
+
             this.initialValue = getter();
+
+            if (firstTime)
+            {
+                firstTime = false;
+
+                firstTimeInitialValue = initialValue;
+                firstTimeFinalValue = finalValue;
+            }
         }
 
         public void Update()
@@ -85,6 +101,28 @@ namespace Juce.Tween
 
             IsPlaying = false;
             IsCompleted = true;
+        }
+
+        public void Reset(ResetMode mode)
+        {
+            switch (mode)
+            {
+                case ResetMode.Restart:
+                    {
+                        elapsedTime = 0.0f;
+                        setter(firstTimeInitialValue);
+                    }
+                    break;
+
+                case ResetMode.Incremental:
+                    {
+                        T difference = interpolator.Subtract(firstTimeInitialValue, firstTimeFinalValue);
+                        finalValue = interpolator.Add(getter(), difference);
+
+                        elapsedTime = 0.0f;
+                    }
+                    break;
+            }
         }
     }
 }

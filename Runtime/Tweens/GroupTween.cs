@@ -5,30 +5,48 @@ namespace Juce.Tween
 {
     public class GroupTween : Tween
     {
-        private readonly List<Tween> aliveTweens = new List<Tween>();
-        private readonly List<Tween> tweensToRemove = new List<Tween>();
+        private readonly List<Tween> allTweens = new List<Tween>();
+        private int tweensLeftToFinish;
 
         protected override void SetTimeScaleInternal(float timeScale)
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                aliveTweens[i].SetTimeScale(timeScale);
+                allTweens[i].SetTimeScale(timeScale);
             }
         }
 
         protected override void SetEaseInternal(EaseDelegate easeFunction)
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                aliveTweens[i].SetEase(easeFunction);
+                allTweens[i].SetEase(easeFunction);
             }
+        }
+
+        protected override void PlayInternal()
+        {
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                allTweens[i].Activate();
+            }
+        }
+
+        protected override void StartInternal()
+        {
+            tweensLeftToFinish = allTweens.Count;
         }
 
         protected override void CompleteInternal()
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                Tween currTween = aliveTweens[i];
+                Tween currTween = allTweens[i];
+
+                if (!currTween.IsPlaying && !currTween.IsCompletedOrKilled)
+                {
+                    currTween.Start();
+                }
 
                 if (currTween.IsPlaying)
                 {
@@ -36,15 +54,14 @@ namespace Juce.Tween
                 }
             }
 
-            aliveTweens.Clear();
-            tweensToRemove.Clear();
+            tweensLeftToFinish = 0;
         }
 
         protected override void KillInternal()
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                Tween currTween = aliveTweens[i];
+                Tween currTween = allTweens[i];
 
                 if (currTween.IsPlaying)
                 {
@@ -52,15 +69,22 @@ namespace Juce.Tween
                 }
             }
 
-            aliveTweens.Clear();
-            tweensToRemove.Clear();
+            tweensLeftToFinish = 0;
+        }
+
+        protected override void ResetInternal()
+        {
+            for (int i = allTweens.Count - 1; i >= 0; --i)
+            {
+                allTweens[i].Reset();
+            }
         }
 
         protected override void UpdateInternal()
         {
-            bool finished = TweenUtils.UpdateSimultaneous(aliveTweens, tweensToRemove);
+            bool finished = TweenUtils.UpdateSimultaneous(allTweens, tweensLeftToFinish);
 
-            if(finished)
+            if (finished)
             {
                 MarkAsFinished();
             }
@@ -80,7 +104,14 @@ namespace Juce.Tween
                 return;
             }
 
-            aliveTweens.Add(tween);
+            if (tween.IsNested)
+            {
+                return;
+            }
+
+            tween.SetNested();
+
+            allTweens.Add(tween);
         }
     }
 }

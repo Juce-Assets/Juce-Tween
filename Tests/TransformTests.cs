@@ -14,9 +14,10 @@ public class TransformTests : MonoBehaviour
     {
         sequenceTween = new SequenceTween();
 
-        sequenceTween.Append(toTween.TweenPosition(new Vector2(1, 0), 4));
-        sequenceTween.Join(toTween.TweenLocalScale(new Vector2(2, 2), 4));
-        sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, 360.0f), 4));
+        //sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, 90.0f), 1));
+        sequenceTween.Append(toTween.TweenPosition(new Vector2(1, 0), 1));
+        //sequenceTween.Join(toTween.TweenLocalScale(new Vector2(2, 2), 4));
+        //sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, 360.0f), 4));
         sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 1));
 
         sequenceTween.SetEase(animationCurve);
@@ -27,7 +28,7 @@ public class TransformTests : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown("c"))
+        if (Input.GetKeyDown("c"))
         {
             sequenceTween.Complete();
         }
@@ -40,6 +41,13 @@ public class TransformTests : MonoBehaviour
         if (Input.GetKeyDown("d"))
         {
             Destroy(this.gameObject);
+        }
+
+        if (Input.GetKeyDown("r"))
+        {
+            sequenceTween.Kill();
+            sequenceTween.Reset();
+            sequenceTween.Play();
         }
     }
 }

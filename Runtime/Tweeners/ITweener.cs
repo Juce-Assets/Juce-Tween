@@ -12,5 +12,6 @@ namespace Juce.Tween
         void Init();
         void Update();
         void Complete();
+        void Reset(ResetMode mode);
     }
 }

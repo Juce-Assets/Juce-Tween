@@ -14,9 +14,9 @@ namespace Juce.Tween
             this.duration = duration;
         }
 
-        protected override void InitInternal()
+        protected override void StartInternal()
         {
-            if(duration <= 0)
+            if (duration <= 0)
             {
                 MarkAsFinished();
             }

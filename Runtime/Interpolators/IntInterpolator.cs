@@ -10,5 +10,15 @@ namespace Juce.Tween
 
             return (int)easeFunction(initialValue, finalValue, time);
         }
+
+        public int Subtract(int initialValue, int finalValue)
+        {
+            return finalValue - initialValue;
+        }
+
+        public int Add(int initialValue, int finalValue)
+        {
+            return finalValue + initialValue;
+        }
     }
 }

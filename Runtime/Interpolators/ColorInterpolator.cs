@@ -16,5 +16,15 @@ namespace Juce.Tween
                 easeFunction(initialValue.a, finalValue.a, time)
                 );
         }
+
+        public Color Subtract(Color initialValue, Color finalValue)
+        {
+            return finalValue - initialValue;
+        }
+
+        public Color Add(Color initialValue, Color finalValue)
+        {
+            return finalValue + initialValue;
+        }
     }
 }

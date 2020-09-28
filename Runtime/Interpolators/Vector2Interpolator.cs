@@ -14,5 +14,15 @@ namespace Juce.Tween
                 easeFunction(initialValue.y, finalValue.y, time)
                 );
         }
+
+        public Vector2 Subtract(Vector2 initialValue, Vector2 finalValue)
+        {
+            return finalValue - initialValue;
+        }
+
+        public Vector2 Add(Vector2 initialValue, Vector2 finalValue)
+        {
+            return finalValue + initialValue;
+        }
     }
 }

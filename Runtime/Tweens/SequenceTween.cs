@@ -5,16 +5,17 @@ namespace Juce.Tween
 {
     public class SequenceTween : Tween
     {
-        private readonly List<Tween> aliveTweens = new List<Tween>();
+        private readonly List<Tween> allTweens = new List<Tween>();
+        private int currTweenIndex;
 
         private Tween lastAppendedTween;
         private GroupTween lastGroupTween;
 
         protected override void SetTimeScaleInternal(float timeScale)
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                aliveTweens[i].SetTimeScale(timeScale);
+                allTweens[i].SetTimeScale(timeScale);
             }
 
             if (lastAppendedTween != null)
@@ -25,9 +26,9 @@ namespace Juce.Tween
 
         protected override void SetEaseInternal(EaseDelegate easeFunction)
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                aliveTweens[i].SetEase(easeFunction);
+                allTweens[i].SetEase(easeFunction);
             }
 
             if (lastAppendedTween != null)
@@ -36,23 +37,37 @@ namespace Juce.Tween
             }
         }
 
-        protected override void InitInternal()
+        protected override void PlayInternal()
         {
             if (lastAppendedTween != null)
             {
-                aliveTweens.Add(lastAppendedTween);
+                lastAppendedTween.SetNested();
+
+                allTweens.Add(lastAppendedTween);
+
+                lastAppendedTween = null;
             }
+
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                allTweens[i].Activate();
+            }
+        }
+
+        protected override void StartInternal()
+        {
+            currTweenIndex = 0;
         }
 
         protected override void CompleteInternal()
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                Tween currTween = aliveTweens[i];
+                Tween currTween = allTweens[i];
 
-                if(!currTween.IsPlaying)
+                if (!currTween.IsPlaying)
                 {
-                    currTween.Init();
+                    currTween.Start();
                 }
 
                 if (!currTween.IsCompleted)
@@ -61,14 +76,14 @@ namespace Juce.Tween
                 }
             }
 
-            aliveTweens.Clear();
+            currTweenIndex = allTweens.Count;
         }
 
         protected override void KillInternal()
         {
-            for (int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < allTweens.Count; ++i)
             {
-                Tween currTween = aliveTweens[i];
+                Tween currTween = allTweens[i];
 
                 if (currTween.IsPlaying)
                 {
@@ -76,12 +91,20 @@ namespace Juce.Tween
                 }
             }
 
-            aliveTweens.Clear();
+            currTweenIndex = allTweens.Count;
+        }
+
+        protected override void ResetInternal()
+        {
+            for (int i = allTweens.Count - 1; i >= 0; --i)
+            {
+                allTweens[i].Reset();
+            }
         }
 
         protected override void UpdateInternal()
         {
-            bool finished = TweenUtils.UpdateSequential(aliveTweens);
+            bool finished = TweenUtils.UpdateSequential(allTweens, ref currTweenIndex);
 
             if (finished)
             {
@@ -98,14 +121,21 @@ namespace Juce.Tween
                 return;
             }
 
-            if(tween.IsPlaying)
+            if (tween.IsPlaying)
+            {
+                return;
+            }
+
+            if (tween.IsNested)
             {
                 return;
             }
 
             if (lastAppendedTween != null)
             {
-                aliveTweens.Add(lastAppendedTween);
+                lastAppendedTween.SetNested();
+
+                allTweens.Add(lastAppendedTween);
             }
 
             lastAppendedTween = tween;
@@ -127,6 +157,11 @@ namespace Juce.Tween
                 return;
             }
 
+            if (tween.IsNested)
+            {
+                return;
+            }
+
             if (lastAppendedTween == null)
             {
                 Append(tween);
@@ -138,7 +173,8 @@ namespace Juce.Tween
             {
                 lastGroupTween = new GroupTween();
                 lastGroupTween.Add(lastAppendedTween);
-                aliveTweens.Add(lastGroupTween);
+                lastGroupTween.SetNested();
+                allTweens.Add(lastGroupTween);
             }
 
             lastGroupTween.Add(tween);

@@ -5,22 +5,24 @@ namespace Juce.Tween
 {
     internal class InterpolationTween : Tween
     {
-        private readonly List<ITweener> aliveTweeners = new List<ITweener>();
-        private readonly List<ITweener> tweenersToRemove = new List<ITweener>();
+        private readonly List<ITweener> allTweeners = new List<ITweener>();
+        private int tweenersLeftToFinish;
 
-        protected override void InitInternal()
+        protected override void StartInternal()
         {
-            for(int i = 0; i < aliveTweeners.Count; ++i)
+            tweenersLeftToFinish = allTweeners.Count;
+
+            for (int i = 0; i < allTweeners.Count; ++i)
             {
-                aliveTweeners[i].SetEase(EaseFunction);
+                allTweeners[i].SetEase(EaseFunction);
             }
         }
 
         protected override void CompleteInternal()
         {
-            for (int i = 0; i < aliveTweeners.Count; ++i)
+            for (int i = 0; i < allTweeners.Count; ++i)
             {
-                ITweener currTweener = aliveTweeners[i];
+                ITweener currTweener = allTweeners[i];
 
                 if (!currTweener.IsPlaying)
                 {
@@ -33,21 +35,31 @@ namespace Juce.Tween
                 }
             }
 
-            aliveTweeners.Clear();
-            tweenersToRemove.Clear();
+            tweenersLeftToFinish = 0;
         }
 
         protected override void KillInternal()
         {
-            aliveTweeners.Clear();
-            tweenersToRemove.Clear();
+            tweenersLeftToFinish = 0;
+        }
+
+        protected override void ResetInternal()
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                ITweener currTweener = allTweeners[i];
+
+                currTweener.Reset(ResetMode.Incremental);
+            }
         }
 
         protected override void UpdateInternal()
         {
-            for (int i = 0; i < aliveTweeners.Count; ++i)
+            tweenersLeftToFinish = 0;
+
+            for (int i = 0; i < allTweeners.Count; ++i)
             {
-                ITweener currTweener = aliveTweeners[i];
+                ITweener currTweener = allTweeners[i];
 
                 currTweener.TimeScale = TimeScale;
 
@@ -58,20 +70,13 @@ namespace Juce.Tween
 
                 currTweener.Update();
 
-                if(currTweener.IsCompleted)
+                if (!currTweener.IsCompleted)
                 {
-                    tweenersToRemove.Add(currTweener);
+                    ++tweenersLeftToFinish;
                 }
             }
 
-            for(int i = 0; i < tweenersToRemove.Count; ++i)
-            {
-                aliveTweeners.Remove(tweenersToRemove[i]);
-            }
-
-            tweenersToRemove.Clear();
-
-            if(aliveTweeners.Count == 0)
+            if (tweenersLeftToFinish == 0)
             {
                 MarkAsFinished();
             }
@@ -79,9 +84,24 @@ namespace Juce.Tween
 
         public void Add(ITweener tweener)
         {
-            if (tweener == null) throw new ArgumentNullException($"Tried to {nameof(Add)} a null {nameof(ITweener)} on {nameof(InterpolationTween)}");
+            if (tweener == null)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(Add)} a null {nameof(ITweener)} on {nameof(InterpolationTween)}");
+            }
 
-            aliveTweeners.Add(tweener);
+            if (tweener.IsPlaying)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(Add)} a {nameof(ITweener)} on {nameof(InterpolationTween)} " +
+                    $"but it was already playing");
+            }
+
+            if (allTweeners.Contains(tweener))
+            {
+                throw new ArgumentNullException($"Tried to {nameof(Add)} a {nameof(ITweener)} on {nameof(InterpolationTween)} " +
+                    $"but it was already added");
+            }
+
+            allTweeners.Add(tweener);
         }
     }
 }

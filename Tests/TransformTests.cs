@@ -20,6 +20,7 @@ public class TransformTests : MonoBehaviour
         sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 1));
 
         sequenceTween.SetEase(animationCurve);
+        sequenceTween.SetLoops(3, ResetMode.Restart);
 
         sequenceTween.Play();
     }
@@ -45,7 +46,6 @@ public class TransformTests : MonoBehaviour
         if (Input.GetKeyDown("r"))
         {
             sequenceTween.Kill();
-            sequenceTween.Reset();
             sequenceTween.Play();
         }
     }

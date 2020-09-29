@@ -11,32 +11,9 @@ namespace Juce.Tween
             {
                 Tween currTweener = aliveTweens[i];
 
-                bool hasValidTarget = currTweener.HasValidTarget();
+                bool active = StepTween(currTweener);
 
-                if (!hasValidTarget)
-                {
-                    if (currTweener.IsPlaying)
-                    {
-                        currTweener.Kill();
-                    }
-                }
-                else
-                {
-                    if (currTweener.IsActive)
-                    {
-                        if (!currTweener.IsPlaying)
-                        {
-                            currTweener.Start();
-                        }
-
-                        if (currTweener.IsPlaying)
-                        {
-                            currTweener.Update();
-                        }
-                    }
-                }
-
-                if (!currTweener.IsActive || !hasValidTarget)
+                if (!active)
                 {
                     tweensToRemove.Add(currTweener);
                 }
@@ -65,32 +42,9 @@ namespace Juce.Tween
             {
                 Tween currTweener = allTweens[i];
 
-                bool hasValidTarget = currTweener.HasValidTarget();
+                bool active = StepTween(currTweener);
 
-                if (!hasValidTarget)
-                {
-                    if (currTweener.IsPlaying)
-                    {
-                        currTweener.Kill();
-                    }
-                }
-                else
-                {
-                    if (currTweener.IsActive)
-                    {
-                        if (!currTweener.IsPlaying)
-                        {
-                            currTweener.Start();
-                        }
-
-                        if (currTweener.IsPlaying)
-                        {
-                            currTweener.Update();
-                        }
-                    }
-                }
-
-                if (currTweener.IsActive && hasValidTarget)
+                if (active)
                 {
                     ++tweensLeftToFinish;
                 }
@@ -113,37 +67,59 @@ namespace Juce.Tween
 
             Tween currTweener = allTweens[currTweenIndex];
 
-            bool hasValidTarget = currTweener.HasValidTarget();
+            bool active = StepTween(currTweener);
 
-            if (!hasValidTarget)
-            {
-                if (currTweener.IsPlaying)
-                {
-                    currTweener.Kill();
-                }
-            }
-            else
-            {
-                if (currTweener.IsActive)
-                {
-                    if (!currTweener.IsPlaying)
-                    {
-                        currTweener.Start();
-                    }
-
-                    if (currTweener.IsPlaying)
-                    {
-                        currTweener.Update();
-                    }
-                }
-            }
-
-            if (!currTweener.IsActive || !hasValidTarget)
+            if (!active)
             {
                 ++currTweenIndex;
             }
 
             return false;
+        }
+
+        internal static bool StepTween(Tween tween)
+        {
+            bool hasValidTarget = tween.HasValidTarget();
+
+            if (!hasValidTarget)
+            {
+                if (tween.IsPlaying)
+                {
+                    tween.Kill();
+                }
+            }
+            else
+            {
+                if (tween.IsActive)
+                {
+                    if (!tween.IsPlaying && !tween.IsCompletedOrKilled)
+                    {
+                        tween.Start();
+                    }
+
+                    if (tween.IsPlaying)
+                    {
+                        tween.Update();
+                    }
+
+                    if (tween.IsCompleted)
+                    {
+                        if (!tween.ForcedFinish && tween.LoopsLeft > 0)
+                        {
+                            tween.LoopsLeft -= 1;
+                            tween.LoopReset(tween.LoopsResetMode);
+                            tween.Start();
+                        }
+                    }
+                }
+            }
+
+            if (tween.IsCompletedOrKilled || !hasValidTarget)
+            {
+                tween.Deactivate();
+            }
+
+            return tween.IsActive;
         }
     }
 }

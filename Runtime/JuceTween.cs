@@ -36,17 +36,14 @@ namespace Juce.Tween
         {
             if (tween == null) throw new ArgumentNullException($"Tried to play a null {nameof(Tween)} on {nameof(JuceTween)} instance");
 
-            if (tween.IsActive)
-            {
-                return;
-            }
-
             if (tween.IsNested)
             {
                 return;
             }
 
+            tween.Reset();
             tween.Activate();
+            tween.Start();
 
             if (!Instance.aliveTweens.Contains(tween))
             {

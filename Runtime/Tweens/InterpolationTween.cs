@@ -49,7 +49,17 @@ namespace Juce.Tween
             {
                 ITweener currTweener = allTweeners[i];
 
-                currTweener.Reset(ResetMode.Incremental);
+                currTweener.Reset();
+            }
+        }
+
+        protected override void LoopResetInternal(ResetMode resetMode)
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                ITweener currTweener = allTweeners[i];
+
+                currTweener.LoopReset(resetMode);
             }
         }
 

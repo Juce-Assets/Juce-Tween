@@ -24,7 +24,7 @@ namespace Juce.Tween
             }
         }
 
-        protected override void PlayInternal()
+        protected override void ActivateInternal()
         {
             for (int i = 0; i < allTweens.Count; ++i)
             {
@@ -76,7 +76,21 @@ namespace Juce.Tween
         {
             for (int i = allTweens.Count - 1; i >= 0; --i)
             {
-                allTweens[i].Reset();
+                Tween currTween = allTweens[i];
+
+                currTween.Reset();
+            }
+        }
+
+        protected override void LoopResetInternal(ResetMode resetMode)
+        {
+            for (int i = allTweens.Count - 1; i >= 0; --i)
+            {
+                Tween currTween = allTweens[i];
+
+                currTween.LoopReset(resetMode);
+
+                currTween.Activate();
             }
         }
 

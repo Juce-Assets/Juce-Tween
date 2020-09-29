@@ -13,6 +13,12 @@ namespace Juce.Tween
 
         public float TimeScale { get; private set; }
 
+        public int Loops { get; private set; }
+        public int LoopsLeft { get; internal set; }
+        public ResetMode LoopsResetMode { get; internal set; }
+
+        internal bool ForcedFinish { get; set; }
+
         public bool IsActive { get; internal set; }
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
@@ -20,12 +26,12 @@ namespace Juce.Tween
         public bool IsCompletedOrKilled => IsCompleted || IsKilled;
 
         public event Action<float> onTimeScaleChange;
-        public event Action onPlay;
         public event Action onStart;
         public event Action onUpdate;
         public event Action onComplete;
         public event Action onKill;
         public event Action onCompleteOrKill;
+        public event Action onLoop;
 
         internal Tween()
         {
@@ -81,6 +87,17 @@ namespace Juce.Tween
             onTimeScaleChange?.Invoke(set);
         }
 
+        public void SetLoops(int loops, ResetMode resetMode)
+        {
+            if (IsActive)
+            {
+                return;
+            }
+
+            Loops = loops;
+            LoopsResetMode = resetMode;
+        }
+
         public void SetEase(Ease ease)
         {
             SetEase(PresetEaser.GetEaseDelegate(ease));
@@ -121,14 +138,26 @@ namespace Juce.Tween
                 return;
             }
 
+            LoopsLeft = Loops;
+
+            ForcedFinish = false;
+
             IsActive = true;
             IsPlaying = false;
             IsCompleted = false;
             IsKilled = false;
 
-            onPlay?.Invoke();
+            ActivateInternal();
+        }
 
-            PlayInternal();
+        internal void Deactivate()
+        {
+            if (!IsActive)
+            {
+                return;
+            }
+
+            IsActive = false;
         }
 
         internal void Start()
@@ -171,10 +200,13 @@ namespace Juce.Tween
 
             CompleteInternal();
 
+            LoopsLeft = 0;
+
+            ForcedFinish = true;
+
             IsPlaying = false;
             IsCompleted = true;
             IsKilled = false;
-            IsActive = false;
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -199,10 +231,13 @@ namespace Juce.Tween
 
             KillInternal();
 
+            LoopsLeft = 0;
+
+            ForcedFinish = true;
+
             IsPlaying = false;
             IsCompleted = false;
             IsKilled = true;
-            IsActive = false;
 
             onKill?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -210,12 +245,41 @@ namespace Juce.Tween
 
         public void Reset()
         {
+            LoopsLeft = 0;
+
+            ForcedFinish = false;
+
+            IsActive = false;
+            IsPlaying = false;
+            IsCompleted = false;
+            IsKilled = false;
+
+            ResetInternal();
+        }
+
+        internal void LoopReset(ResetMode resetMode)
+        {
             if (!HasValidTarget())
             {
                 return;
             }
 
-            ResetInternal();
+            onLoop?.Invoke();
+
+            LoopResetInternal(resetMode);
+        }
+
+
+        internal void Update()
+        {
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            onUpdate?.Invoke();
+
+            UpdateInternal();
         }
 
         public void OnTimeScaleChange(Action<float> action)
@@ -226,16 +290,6 @@ namespace Juce.Tween
             }
 
             onTimeScaleChange += action;
-        }
-
-        public void OnPlay(Action action)
-        {
-            if (action == null)
-            {
-                return;
-            }
-
-            onPlay = action;
         }
 
         public void OnStart(Action action)
@@ -288,16 +342,14 @@ namespace Juce.Tween
             onCompleteOrKill = action;
         }
 
-        internal void Update()
+        public void OnLoop(Action action)
         {
-            if (!IsPlaying)
+            if (action == null)
             {
                 return;
             }
 
-            onUpdate?.Invoke();
-
-            UpdateInternal();
+            onLoop = action;
         }
 
         protected void MarkAsFinished()
@@ -307,9 +359,10 @@ namespace Juce.Tween
                 return;
             }
 
+            ForcedFinish = false;
+
             IsPlaying = false;
             IsCompleted = true;
-            IsActive = false;
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -325,7 +378,7 @@ namespace Juce.Tween
 
         }
 
-        protected virtual void PlayInternal()
+        protected virtual void ActivateInternal()
         {
 
         }
@@ -351,6 +404,11 @@ namespace Juce.Tween
         }
 
         protected virtual void ResetInternal()
+        {
+
+        }
+
+        protected virtual void LoopResetInternal(ResetMode resetMode)
         {
 
         }

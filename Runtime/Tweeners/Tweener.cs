@@ -103,7 +103,15 @@ namespace Juce.Tween
             IsCompleted = true;
         }
 
-        public void Reset(ResetMode mode)
+        public void Reset()
+        {
+            elapsedTime = 0.0f;
+
+            IsPlaying = false;
+            IsCompleted = false;
+        }
+
+        public void LoopReset(ResetMode mode)
         {
             switch (mode)
             {
@@ -123,6 +131,9 @@ namespace Juce.Tween
                     }
                     break;
             }
+
+            IsPlaying = false;
+            IsCompleted = false;
         }
     }
 }

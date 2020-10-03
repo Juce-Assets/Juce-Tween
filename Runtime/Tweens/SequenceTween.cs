@@ -94,16 +94,6 @@ namespace Juce.Tween
             currTweenIndex = allTweens.Count;
         }
 
-        protected override void ResetInternal()
-        {
-            for (int i = allTweens.Count - 1; i >= 0; --i)
-            {
-                Tween currTween = allTweens[i];
-
-                currTween.Reset();
-            }
-        }
-
         protected override void LoopResetInternal(ResetMode resetMode)
         {
             for (int i = allTweens.Count - 1; i >= 0; --i)

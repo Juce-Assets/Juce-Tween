@@ -10,9 +10,9 @@ namespace Juce.Tween
         bool IsCompleted { get; }
         void SetEase(EaseDelegate easeFunction);
         void Init();
+        void Start();
         void Update();
         void Complete();
-        void Reset();
         void LoopReset(ResetMode mode);
     }
 }

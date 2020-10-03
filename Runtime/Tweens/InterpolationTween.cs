@@ -8,6 +8,16 @@ namespace Juce.Tween
         private readonly List<ITweener> allTweeners = new List<ITweener>();
         private int tweenersLeftToFinish;
 
+        protected override void ActivateInternal()
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                ITweener currTweener = allTweeners[i];
+
+                currTweener.Init();
+            }
+        }
+
         protected override void StartInternal()
         {
             tweenersLeftToFinish = allTweeners.Count;
@@ -26,7 +36,7 @@ namespace Juce.Tween
 
                 if (!currTweener.IsPlaying)
                 {
-                    currTweener.Init();
+                    currTweener.Start();
                 }
 
                 if (currTweener.IsPlaying)
@@ -41,16 +51,6 @@ namespace Juce.Tween
         protected override void KillInternal()
         {
             tweenersLeftToFinish = 0;
-        }
-
-        protected override void ResetInternal()
-        {
-            for (int i = 0; i < allTweeners.Count; ++i)
-            {
-                ITweener currTweener = allTweeners[i];
-
-                currTweener.Reset();
-            }
         }
 
         protected override void LoopResetInternal(ResetMode resetMode)
@@ -75,7 +75,7 @@ namespace Juce.Tween
 
                 if (!currTweener.IsPlaying)
                 {
-                    currTweener.Init();
+                    currTweener.Start();
                 }
 
                 currTweener.Update();

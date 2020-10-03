@@ -5,25 +5,26 @@ namespace Juce.Tween
 {
     public abstract partial class Tween
     {
-        internal bool HasTarget { get; private set; }
-        internal object Target { get; private set; }
         internal bool IsNested { get; private set; }
 
-        public EaseDelegate EaseFunction { get; private set; }
+        internal EaseDelegate EaseFunction { get; private set; }
 
-        public float TimeScale { get; private set; }
+        internal float TimeScale { get; private set; }
 
-        public int Loops { get; private set; }
-        public int LoopsLeft { get; internal set; }
-        public ResetMode LoopsResetMode { get; internal set; }
+        internal bool HasTarget { get; private set; }
+        internal object Target { get; private set; }
+
+        internal int Loops { get; private set; }
+        internal int LoopsLeft { get; set; }
+        internal ResetMode LoopsResetMode { get; set; }
 
         internal bool ForcedFinish { get; set; }
 
-        public bool IsActive { get; internal set; }
-        public bool IsPlaying { get; protected set; }
-        public bool IsCompleted { get; protected set; }
-        public bool IsKilled { get; protected set; }
-        public bool IsCompletedOrKilled => IsCompleted || IsKilled;
+        internal bool IsActive { get; set; }
+        internal bool IsPlaying { get; set; }
+        internal bool IsCompleted { get; set; }
+        internal bool IsKilled { get; set; }
+        internal bool IsCompletedOrKilled => IsCompleted || IsKilled;
 
         public event Action<float> onTimeScaleChange;
         public event Action onStart;
@@ -44,11 +45,49 @@ namespace Juce.Tween
             IsNested = true;
         }
 
+        public void SetEase(Ease ease)
+        {
+            SetEase(PresetEaser.GetEaseDelegate(ease));
+        }
+
+        public void SetEase(AnimationCurve animationCurve)
+        {
+            if (animationCurve == null)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
+                  $"with a null {nameof(AnimationCurve)} on {nameof(Tween)}");
+            }
+
+            SetEase(AnimationCurveEaser.GetEaseDelegate(animationCurve));
+        }
+
+        internal void SetEase(EaseDelegate easeFunction)
+        {
+            if (easeFunction == null)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
+                  $"with a null {nameof(EaseDelegate)} on {nameof(Tween)}");
+            }
+
+            EaseFunction = easeFunction;
+
+            SetEaseInternal(easeFunction);
+        }
+
+        public void SetTimeScale(float set)
+        {
+            TimeScale = set;
+
+            SetTimeScaleInternal(set);
+
+            onTimeScaleChange?.Invoke(set);
+        }
+
         public void SetTarget(object target)
         {
             Target = target;
 
-            if (target != null)
+            if (Target != null)
             {
                 HasTarget = true;
             }
@@ -60,31 +99,24 @@ namespace Juce.Tween
 
         public bool HasValidTarget()
         {
-            if (HasTarget)
+            if (!HasTarget)
             {
-                if (Target is UnityEngine.Object)
-                {
-                    if (((UnityEngine.Object)Target) == null)
-                    {
-                        return false;
-                    }
-                }
-                else if (Target == null)
+                return true;
+            }
+
+            if (Target is UnityEngine.Object)
+            {
+                if (((UnityEngine.Object)Target) == null)
                 {
                     return false;
                 }
             }
+            else if (Target == null)
+            {
+                return false;
+            }
 
             return true;
-        }
-
-        public void SetTimeScale(float set)
-        {
-            TimeScale = set;
-
-            SetTimeScaleInternal(set);
-
-            onTimeScaleChange?.Invoke(set);
         }
 
         public void SetLoops(int loops, ResetMode resetMode)
@@ -98,36 +130,15 @@ namespace Juce.Tween
             LoopsResetMode = resetMode;
         }
 
-        public void SetEase(Ease ease)
+        public void Play()
         {
-            SetEase(PresetEaser.GetEaseDelegate(ease));
-        }
-
-        public void SetEase(AnimationCurve animationCurve)
-        {
-            if (animationCurve == null) throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
-                $"with a null {nameof(AnimationCurve)} on {nameof(Tween)}");
-
-            SetEase(AnimationCurveEaser.GetEaseDelegate(animationCurve));
-        }
-
-        internal void SetEase(EaseDelegate easeFunction)
-        {
-            if (easeFunction == null) throw new ArgumentNullException($"Tried to {nameof(SetEase)} " +
-                $"with a null {nameof(EaseDelegate)} on {nameof(Tween)}");
-
-            if (IsPlaying)
+            if (IsActive)
             {
                 return;
             }
 
-            EaseFunction = easeFunction;
+            Activate();
 
-            SetEaseInternal(easeFunction);
-        }
-
-        public void Play()
-        {
             JuceTween.Play(this);
         }
 
@@ -176,9 +187,9 @@ namespace Juce.Tween
             IsCompleted = false;
             IsKilled = false;
 
-            onStart?.Invoke();
-
             StartInternal();
+
+            onStart?.Invoke();
         }
 
         public void Complete()
@@ -198,8 +209,6 @@ namespace Juce.Tween
                 return;
             }
 
-            CompleteInternal();
-
             LoopsLeft = 0;
 
             ForcedFinish = true;
@@ -207,6 +216,8 @@ namespace Juce.Tween
             IsPlaying = false;
             IsCompleted = true;
             IsKilled = false;
+
+            CompleteInternal();
 
             onComplete?.Invoke();
             onCompleteOrKill?.Invoke();
@@ -229,8 +240,6 @@ namespace Juce.Tween
                 return;
             }
 
-            KillInternal();
-
             LoopsLeft = 0;
 
             ForcedFinish = true;
@@ -239,22 +248,10 @@ namespace Juce.Tween
             IsCompleted = false;
             IsKilled = true;
 
+            KillInternal();
+
             onKill?.Invoke();
             onCompleteOrKill?.Invoke();
-        }
-
-        public void Reset()
-        {
-            LoopsLeft = 0;
-
-            ForcedFinish = false;
-
-            IsActive = false;
-            IsPlaying = false;
-            IsCompleted = false;
-            IsKilled = false;
-
-            ResetInternal();
         }
 
         internal void LoopReset(ResetMode resetMode)
@@ -264,9 +261,9 @@ namespace Juce.Tween
                 return;
             }
 
-            onLoop?.Invoke();
-
             LoopResetInternal(resetMode);
+
+            onLoop?.Invoke();
         }
 
 
@@ -277,9 +274,9 @@ namespace Juce.Tween
                 return;
             }
 
-            onUpdate?.Invoke();
-
             UpdateInternal();
+
+            onUpdate?.Invoke();
         }
 
         public void OnTimeScaleChange(Action<float> action)
@@ -399,11 +396,6 @@ namespace Juce.Tween
         }
 
         protected virtual void UpdateInternal()
-        {
-
-        }
-
-        protected virtual void ResetInternal()
         {
 
         }

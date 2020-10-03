@@ -34,16 +34,10 @@ namespace Juce.Tween
 
         internal static void Play(Tween tween)
         {
-            if (tween == null) throw new ArgumentNullException($"Tried to play a null {nameof(Tween)} on {nameof(JuceTween)} instance");
-
-            if (tween.IsNested)
+            if (tween == null)
             {
-                return;
+                throw new ArgumentNullException($"Tried to play a null {nameof(Tween)} on {nameof(JuceTween)} instance");
             }
-
-            tween.Reset();
-            tween.Activate();
-            tween.Start();
 
             if (!Instance.aliveTweens.Contains(tween))
             {

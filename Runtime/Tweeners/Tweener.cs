@@ -49,6 +49,14 @@ namespace Juce.Tween
 
         public void Init()
         {
+            IsPlaying = false;
+            IsCompleted = false;
+
+            elapsedTime = 0.0f;
+        }
+
+        public void Start()
+        {
             if (IsPlaying)
             {
                 return;
@@ -101,14 +109,6 @@ namespace Juce.Tween
 
             IsPlaying = false;
             IsCompleted = true;
-        }
-
-        public void Reset()
-        {
-            elapsedTime = 0.0f;
-
-            IsPlaying = false;
-            IsCompleted = false;
         }
 
         public void LoopReset(ResetMode mode)

@@ -32,7 +32,7 @@ namespace Juce.Tween
             timeScale = 1.0f;
         }
 
-        internal static void Play(Tween tween)
+        internal static void Add(Tween tween, bool syncNow)
         {
             if (tween == null)
             {
@@ -42,6 +42,11 @@ namespace Juce.Tween
             if (!Instance.aliveTweens.Contains(tween))
             {
                 Instance.aliveTweens.Add(tween);
+            }
+
+            if(syncNow)
+            {
+                Instance.UpdateTweens();
             }
         }
 

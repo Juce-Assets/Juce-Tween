@@ -72,13 +72,13 @@ namespace Juce.Tween
             tweensLeftToFinish = 0;
         }
 
-        protected override void LoopResetInternal(ResetMode resetMode)
+        protected override void ResetInternal(ResetMode resetMode)
         {
             for (int i = allTweens.Count - 1; i >= 0; --i)
             {
                 Tween currTween = allTweens[i];
 
-                currTween.LoopReset(resetMode);
+                currTween.Reset(resetMode);
 
                 currTween.Activate();
             }
@@ -96,7 +96,10 @@ namespace Juce.Tween
 
         public void Add(Tween tween)
         {
-            if (tween == null) throw new ArgumentNullException($"Tried to Add a null {nameof(Tween)} on {nameof(GroupTween)}");
+            if (tween == null)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(Add)} a null {nameof(Tween)} on {nameof(GroupTween)}");
+            }
 
             if (IsPlaying)
             {
@@ -113,7 +116,7 @@ namespace Juce.Tween
                 return;
             }
 
-            tween.SetNested();
+            tween.IsNested = true;
 
             allTweens.Add(tween);
         }

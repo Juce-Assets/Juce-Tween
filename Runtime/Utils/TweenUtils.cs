@@ -101,25 +101,35 @@ namespace Juce.Tween
                     {
                         tween.Update();
                     }
+                }
 
-                    if (tween.IsCompleted)
+                if(!tween.IsActive)
+                {
+                    if (!tween.ForcedFinish )
                     {
-                        if (!tween.ForcedFinish && tween.LoopsLeft > 0)
-                        {
-                            tween.LoopsLeft -= 1;
-                            tween.LoopReset(tween.LoopsResetMode);
-                            tween.Start();
-                        }
+                        AdvanceLoop(tween);
                     }
                 }
             }
 
-            if (tween.IsCompletedOrKilled || !hasValidTarget)
+            if (!hasValidTarget)
             {
                 tween.Deactivate();
             }
 
             return tween.IsActive;
+        }
+
+        internal static void AdvanceLoop(Tween tween)
+        {
+            if (tween.LoopsLeft <= 0)
+            {
+                return;
+            }
+
+            tween.LoopsLeft -= 1;
+            tween.Reset(tween.LoopsResetMode);
+            tween.Activate(false);
         }
     }
 }

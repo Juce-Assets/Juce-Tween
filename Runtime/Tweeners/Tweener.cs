@@ -78,6 +78,26 @@ namespace Juce.Tween
             }
         }
 
+        public void Reset(ResetMode mode)
+        {
+            switch (mode)
+            {
+                case ResetMode.Restart:
+                    {
+                        setter(firstTimeInitialValue);
+                        finalValue = firstTimeFinalValue;
+                    }
+                    break;
+
+                case ResetMode.Incremental:
+                    {
+                        T difference = interpolator.Subtract(firstTimeInitialValue, firstTimeFinalValue);
+                        finalValue = interpolator.Add(getter(), difference);
+                    }
+                    break;
+            }
+        }
+
         public void Update()
         {
             if (!IsPlaying)
@@ -109,31 +129,6 @@ namespace Juce.Tween
 
             IsPlaying = false;
             IsCompleted = true;
-        }
-
-        public void LoopReset(ResetMode mode)
-        {
-            switch (mode)
-            {
-                case ResetMode.Restart:
-                    {
-                        elapsedTime = 0.0f;
-                        setter(firstTimeInitialValue);
-                    }
-                    break;
-
-                case ResetMode.Incremental:
-                    {
-                        T difference = interpolator.Subtract(firstTimeInitialValue, firstTimeFinalValue);
-                        finalValue = interpolator.Add(getter(), difference);
-
-                        elapsedTime = 0.0f;
-                    }
-                    break;
-            }
-
-            IsPlaying = false;
-            IsCompleted = false;
         }
     }
 }

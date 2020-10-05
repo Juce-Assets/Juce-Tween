@@ -6,6 +6,7 @@ namespace Juce.Tween
     internal class InterpolationTween : Tween
     {
         private readonly List<ITweener> allTweeners = new List<ITweener>();
+
         private int tweenersLeftToFinish;
 
         protected override void ActivateInternal()
@@ -53,13 +54,15 @@ namespace Juce.Tween
             tweenersLeftToFinish = 0;
         }
 
-        protected override void LoopResetInternal(ResetMode resetMode)
+        protected override void ResetInternal(ResetMode resetMode)
         {
             for (int i = 0; i < allTweeners.Count; ++i)
             {
                 ITweener currTweener = allTweeners[i];
 
-                currTweener.LoopReset(resetMode);
+                currTweener.Reset(resetMode);
+
+                currTweener.Init();
             }
         }
 

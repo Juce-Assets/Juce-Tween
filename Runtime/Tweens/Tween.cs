@@ -5,7 +5,7 @@ namespace Juce.Tween
 {
     public abstract partial class Tween
     {
-        internal bool IsNested { get; private set; }
+        internal bool IsNested { get; set; }
 
         internal EaseDelegate EaseFunction { get; private set; }
 
@@ -38,11 +38,6 @@ namespace Juce.Tween
         {
             SetTimeScale(1);
             SetEase(Ease.Linear);
-        }
-
-        internal void SetNested()
-        {
-            IsNested = true;
         }
 
         public void SetEase(Ease ease)
@@ -130,26 +125,43 @@ namespace Juce.Tween
             LoopsResetMode = resetMode;
         }
 
-        public void Play()
+        public void Play(bool syncOnPlay = false)
         {
             if (IsActive)
+            {
+                return;
+            }
+
+            if(IsNested)
             {
                 return;
             }
 
             Activate();
 
-            JuceTween.Play(this);
+            JuceTween.Add(this, syncOnPlay);
         }
 
-        internal void Activate()
+        public void Restart()
+        {
+            Kill();
+
+            Reset(ResetMode.Restart);
+
+            Play();
+        }
+
+        internal void Activate(bool resetLoops = true)
         {
             if (IsActive)
             {
                 return;
             }
 
-            LoopsLeft = Loops;
+            if (resetLoops)
+            {
+                LoopsLeft = Loops;
+            }
 
             ForcedFinish = false;
 
@@ -183,6 +195,8 @@ namespace Juce.Tween
                 return;
             }
 
+            ForcedFinish = false;
+
             IsPlaying = true;
             IsCompleted = false;
             IsKilled = false;
@@ -190,6 +204,18 @@ namespace Juce.Tween
             StartInternal();
 
             onStart?.Invoke();
+        }
+
+        internal void Reset(ResetMode resetMode)
+        {
+            if (!HasValidTarget())
+            {
+                return;
+            }
+
+            ResetInternal(resetMode);
+
+            onLoop?.Invoke();
         }
 
         public void Complete()
@@ -208,6 +234,8 @@ namespace Juce.Tween
             {
                 return;
             }
+
+            Deactivate();
 
             LoopsLeft = 0;
 
@@ -240,6 +268,8 @@ namespace Juce.Tween
                 return;
             }
 
+            Deactivate();
+
             LoopsLeft = 0;
 
             ForcedFinish = true;
@@ -254,18 +284,33 @@ namespace Juce.Tween
             onCompleteOrKill?.Invoke();
         }
 
-        internal void LoopReset(ResetMode resetMode)
+        protected void MarkAsFinished()
         {
-            if (!HasValidTarget())
+            if (!IsActive)
             {
                 return;
             }
 
-            LoopResetInternal(resetMode);
+            if (!IsPlaying)
+            {
+                return;
+            }
 
-            onLoop?.Invoke();
+            if(IsCompletedOrKilled)
+            {
+                return;
+            }
+
+            Deactivate(); 
+
+            ForcedFinish = false;
+
+            IsPlaying = false;
+            IsCompleted = true;
+
+            onComplete?.Invoke();
+            onCompleteOrKill?.Invoke();
         }
-
 
         internal void Update()
         {
@@ -349,22 +394,6 @@ namespace Juce.Tween
             onLoop = action;
         }
 
-        protected void MarkAsFinished()
-        {
-            if (!IsPlaying)
-            {
-                return;
-            }
-
-            ForcedFinish = false;
-
-            IsPlaying = false;
-            IsCompleted = true;
-
-            onComplete?.Invoke();
-            onCompleteOrKill?.Invoke();
-        }
-
         protected virtual void SetTimeScaleInternal(float timeScale)
         {
 
@@ -385,6 +414,11 @@ namespace Juce.Tween
 
         }
 
+        protected virtual void ResetInternal(ResetMode resetMode)
+        {
+
+        }
+
         protected virtual void CompleteInternal()
         {
 
@@ -396,11 +430,6 @@ namespace Juce.Tween
         }
 
         protected virtual void UpdateInternal()
-        {
-
-        }
-
-        protected virtual void LoopResetInternal(ResetMode resetMode)
         {
 
         }

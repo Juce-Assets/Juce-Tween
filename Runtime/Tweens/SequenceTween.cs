@@ -8,7 +8,6 @@ namespace Juce.Tween
         private readonly List<Tween> allTweens = new List<Tween>();
         private int currTweenIndex;
 
-        private Tween lastAppendedTween;
         private GroupTween lastGroupTween;
 
         protected override void SetTimeScaleInternal(float timeScale)
@@ -16,11 +15,6 @@ namespace Juce.Tween
             for (int i = 0; i < allTweens.Count; ++i)
             {
                 allTweens[i].SetTimeScale(timeScale);
-            }
-
-            if (lastAppendedTween != null)
-            {
-                lastAppendedTween.SetTimeScale(timeScale);
             }
         }
 
@@ -30,24 +24,10 @@ namespace Juce.Tween
             {
                 allTweens[i].SetEase(easeFunction);
             }
-
-            if (lastAppendedTween != null)
-            {
-                lastAppendedTween.SetEase(easeFunction);
-            }
         }
 
         protected override void ActivateInternal()
         {
-            if (lastAppendedTween != null)
-            {
-                lastAppendedTween.SetNested();
-
-                allTweens.Add(lastAppendedTween);
-
-                lastAppendedTween = null;
-            }
-
             for (int i = 0; i < allTweens.Count; ++i)
             {
                 allTweens[i].Activate();
@@ -65,7 +45,7 @@ namespace Juce.Tween
             {
                 Tween currTween = allTweens[i];
 
-                if (!currTween.IsPlaying)
+                if (!currTween.IsPlaying && !currTween.IsCompletedOrKilled)
                 {
                     currTween.Start();
                 }
@@ -94,13 +74,13 @@ namespace Juce.Tween
             currTweenIndex = allTweens.Count;
         }
 
-        protected override void LoopResetInternal(ResetMode resetMode)
+        protected override void ResetInternal(ResetMode resetMode)
         {
             for (int i = allTweens.Count - 1; i >= 0; --i)
             {
                 Tween currTween = allTweens[i];
 
-                currTween.LoopReset(resetMode);
+                currTween.Reset(resetMode);
 
                 currTween.Activate();
             }
@@ -118,16 +98,14 @@ namespace Juce.Tween
 
         public void Append(Tween tween)
         {
-            if (tween == null) throw new ArgumentNullException($"Tried to {nameof(Append)} a null {nameof(Tween)} on {nameof(SequenceTween)}");
-
             if (IsPlaying)
             {
                 return;
             }
 
-            if (tween.IsPlaying)
+            if (tween == null)
             {
-                return;
+                throw new ArgumentNullException($"Tried to {nameof(Append)} a null {nameof(Tween)} on {nameof(SequenceTween)}");
             }
 
             if (tween.IsNested)
@@ -135,21 +113,24 @@ namespace Juce.Tween
                 return;
             }
 
-            if (lastAppendedTween != null)
+            if (tween.IsActive)
             {
-                lastAppendedTween.SetNested();
-
-                allTweens.Add(lastAppendedTween);
+                return;
             }
 
-            lastAppendedTween = tween;
+            tween.IsNested = true;
+
+            allTweens.Add(tween);
 
             lastGroupTween = null;
         }
 
         public void Join(Tween tween)
         {
-            if (tween == null) throw new ArgumentNullException($"Tried to {nameof(Join)} a null {nameof(Tween)} on {nameof(SequenceTween)}");
+            if (tween == null)
+            {
+                throw new ArgumentNullException($"Tried to {nameof(Join)} a null {nameof(Tween)} on {nameof(SequenceTween)}");
+            }
 
             if (IsPlaying)
             {
@@ -166,22 +147,32 @@ namespace Juce.Tween
                 return;
             }
 
-            if (lastAppendedTween == null)
+            if(allTweens.Count == 0)
             {
                 Append(tween);
 
                 return;
             }
 
-            if (lastGroupTween == null)
+            if(lastGroupTween != null)
             {
-                lastGroupTween = new GroupTween();
-                lastGroupTween.Add(lastAppendedTween);
-                lastGroupTween.SetNested();
-                allTweens.Add(lastGroupTween);
+                lastGroupTween.Add(tween);
+
+                return;
             }
 
+            lastGroupTween = new GroupTween();
+            lastGroupTween.IsNested = true;
+
+            Tween toAppendTo = allTweens[allTweens.Count - 1];
+            allTweens.RemoveAt(allTweens.Count - 1);
+            toAppendTo.IsNested = false;
+
+            lastGroupTween.Add(toAppendTo);
+
             lastGroupTween.Add(tween);
+
+            allTweens.Add(lastGroupTween);
         }
 
         public void AppendCallback(Action action)

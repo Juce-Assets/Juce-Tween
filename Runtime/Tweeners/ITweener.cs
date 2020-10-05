@@ -11,8 +11,8 @@ namespace Juce.Tween
         void SetEase(EaseDelegate easeFunction);
         void Init();
         void Start();
+        void Reset(ResetMode mode);
         void Update();
         void Complete();
-        void LoopReset(ResetMode mode);
     }
 }

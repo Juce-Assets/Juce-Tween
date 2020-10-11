@@ -35,5 +35,15 @@ namespace Juce.Tween
                 MarkAsFinished();
             }
         }
+
+        protected override float GetDurationInternal()
+        {
+            return duration;
+        }
+
+        protected override float GetProgressInternal()
+        {
+            return elapsedTime / duration;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Juce.Tween
         internal bool ForcedFinish { get; set; }
 
         internal bool IsActive { get; set; }
-        internal bool IsPlaying { get; set; }
+        public bool IsPlaying { get; internal set; }
         internal bool IsCompleted { get; set; }
         internal bool IsKilled { get; set; }
         internal bool IsCompletedOrKilled => IsCompleted || IsKilled;
@@ -324,6 +324,21 @@ namespace Juce.Tween
             onUpdate?.Invoke();
         }
 
+        public float GetDuration()
+        {
+            return GetDurationInternal();
+        }
+
+        public float GetProgress()
+        {
+            if (!IsPlaying)
+            {
+                return 0.0f;
+            }
+
+            return GetProgressInternal();
+        }
+
         public void OnTimeScaleChange(Action<float> action)
         {
             if (action == null)
@@ -432,6 +447,16 @@ namespace Juce.Tween
         protected virtual void UpdateInternal()
         {
 
+        }
+
+        protected virtual float GetDurationInternal()
+        {
+            return 0.0f;
+        }
+
+        protected virtual float GetProgressInternal()
+        {
+            return 1.0f;
         }
     }
 }

@@ -95,6 +95,40 @@ namespace Juce.Tween
             }
         }
 
+        protected override float GetDurationInternal()
+        {
+            float duration = 0.0f;
+
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                ITweener currTweener = allTweeners[i];
+
+                if (currTweener.Duration > duration)
+                {
+                    duration = currTweener.Duration;
+                }
+            }
+
+            return duration;
+        }
+
+        protected override float GetProgressInternal()
+        {
+            float progress = float.MaxValue;
+
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                ITweener currTweener = allTweeners[i];
+
+                if (currTweener.Progress < progress)
+                {
+                    progress = currTweener.Progress;
+                }
+            }
+
+            return progress;
+        }
+
         public void Add(ITweener tweener)
         {
             if (tweener == null)

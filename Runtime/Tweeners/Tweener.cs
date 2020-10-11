@@ -12,7 +12,6 @@ namespace Juce.Tween
         private T firstTimeInitialValue;
         private T firstTimeFinalValue;
 
-        private readonly float duration;
         private readonly IInterpolator<T> interpolator;
 
         private readonly Getter getter;
@@ -24,17 +23,19 @@ namespace Juce.Tween
         public delegate void Setter(T value);
         public delegate T Getter();
 
+        public float Duration { get; }
         public float TimeScale { get; set; }
 
         public bool IsPlaying { get; protected set; }
         public bool IsCompleted { get; protected set; }
+        public float Progress { get => elapsedTime / Duration; }
 
         internal Tweener(Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
         {
             this.getter = getter;
             this.finalValue = finalValue;
             this.setter = setter;
-            this.duration = duration;
+            Duration = duration;
             this.interpolator = interpolator;
 
             firstTime = true;
@@ -80,6 +81,11 @@ namespace Juce.Tween
 
         public void Reset(ResetMode mode)
         {
+            if(firstTime)
+            {
+                return;
+            }
+
             switch (mode)
             {
                 case ResetMode.Restart:
@@ -109,9 +115,9 @@ namespace Juce.Tween
 
             elapsedTime += dt;
 
-            if (elapsedTime < duration)
+            if (elapsedTime < Duration)
             {
-                float timeNormalized = elapsedTime / duration;
+                float timeNormalized = elapsedTime / Duration;
 
                 T newValue = interpolator.Evaluate(initialValue, finalValue, timeNormalized, easeFunction);
 

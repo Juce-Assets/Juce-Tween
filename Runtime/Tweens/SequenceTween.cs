@@ -96,6 +96,38 @@ namespace Juce.Tween
             }
         }
 
+        protected override float GetDurationInternal()
+        {
+            float duration = 0.0f;
+
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                Tween currTween = allTweens[i];
+
+                duration += currTween.GetDuration();
+            }
+
+            return duration;
+        }
+
+        protected override float GetProgressInternal()
+        {
+            if (allTweens.Count <= currTweenIndex)
+            {
+                return 1.0f;
+            }
+
+            float progress = float.MaxValue;
+
+            progress = (1 / allTweens.Count) * currTweenIndex;
+
+            Tween currTweener = allTweens[currTweenIndex];
+
+            progress += (1 / allTweens.Count) * currTweener.GetProgress();
+
+            return progress;
+        }
+
         public void Append(Tween tween)
         {
             if (IsPlaying)

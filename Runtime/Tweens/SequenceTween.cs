@@ -187,12 +187,18 @@ namespace Juce.Tween
 
         public void AppendWaitTime(float time)
         {
-            Append(new WaitTimeTween(time));
+            if (time > 0)
+            {
+                Append(new WaitTimeTween(time));
+            }
         }
 
         public void JoinWaitTime(float time)
         {
-            Join(new WaitTimeTween(time));
+            if (time > 0)
+            {
+                Join(new WaitTimeTween(time));
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ public static class JuceTweenRectTransformExtensions
         return tween;
     }
 
-    public static Tween TweenAnchorMin (this RectTransform rectTransform, Vector2 to, float duration)
+    public static Tween TweenAnchorMin(this RectTransform rectTransform, Vector2 to, float duration)
     {
         Tween tween = Tween.To(() => rectTransform.anchorMin, x => rectTransform.anchorMin = x, to, duration);
         tween.SetTarget(rectTransform);
@@ -41,6 +41,22 @@ public static class JuceTweenRectTransformExtensions
     public static Tween TweenSizeDelta(this RectTransform rectTransform, Vector2 to, float duration)
     {
         Tween tween = Tween.To(() => rectTransform.sizeDelta, x => rectTransform.sizeDelta = x, to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
+    public static Tween TweenSizeDeltaX(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.sizeDelta.x, 
+            x => rectTransform.sizeDelta = new Vector2(x, rectTransform.sizeDelta.y), to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
+    public static Tween TweenSizeDeltaY(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.sizeDelta.y,
+            y => rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, y), to, duration);
         tween.SetTarget(rectTransform);
         return tween;
     }

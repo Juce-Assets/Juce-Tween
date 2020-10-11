@@ -16,6 +16,8 @@ namespace Juce.Tween
 
         protected override void StartInternal()
         {
+            elapsedTime = 0.0f;
+
             if (duration <= 0)
             {
                 MarkAsFinished();

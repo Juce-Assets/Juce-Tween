@@ -125,7 +125,9 @@ namespace Juce.Tween
 
         public void Complete()
         {
-            setter(finalValue);
+            T newValue = interpolator.Evaluate(initialValue, finalValue, 1.0f, easeFunction);
+
+            setter(newValue);
 
             IsPlaying = false;
             IsCompleted = true;

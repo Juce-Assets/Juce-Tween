@@ -104,26 +104,92 @@ public static class TransformExtensions
         return tween;
     }
 
-    public static Tween TweenLocalRotationX(this Transform transform, float to, float duration)
+    public static Tween TweenLocalRotationX(this Transform transform, float to, float duration, RotationMode mode)
     {
-        Tween tween = Tween.To(() => transform.localRotation.eulerAngles.x,
-            x => transform.localRotation = Quaternion.Euler(x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z), to, duration);
+        float finalTo = to;
+
+        switch (mode)
+        {
+            case RotationMode.Fast:
+                {
+                    finalTo = AngleUtils.Clamp360(to);
+                }
+                break;
+        }
+
+        Tween tween = Tween.To(() =>
+        {
+            switch (mode)
+            {
+                case RotationMode.Fast:
+                    {
+                        return AngleUtils.Clamp360(transform.localRotation.eulerAngles.x);
+                    }
+            }
+
+            return transform.localRotation.eulerAngles.x;
+        },
+        x => transform.localRotation = Quaternion.Euler(x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z), finalTo, duration);
         tween.SetTarget(transform);
         return tween;
     }
 
-    public static Tween TweenLocalRotationY(this Transform transform, float to, float duration)
+    public static Tween TweenLocalRotationY(this Transform transform, float to, float duration, RotationMode mode)
     {
-        Tween tween = Tween.To(() => transform.localRotation.eulerAngles.y,
-            y => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, y, transform.localRotation.eulerAngles.z), to, duration);
-        tween.SetTarget(transform);
+        float finalTo = to;
+
+        switch (mode)
+        {
+            case RotationMode.Fast:
+                {
+                    finalTo = AngleUtils.Clamp360(to);
+                }
+                break;
+        }
+
+        Tween tween = Tween.To(() =>
+        {
+            switch (mode)
+            {
+                case RotationMode.Fast:
+                    {
+                        return AngleUtils.Clamp360(transform.localRotation.eulerAngles.y);
+                    }
+            }
+
+            return transform.localRotation.eulerAngles.y;
+        },
+        y => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, y, transform.localRotation.eulerAngles.z), finalTo, duration);
+            tween.SetTarget(transform);
         return tween;
     }
 
-    public static Tween TweenLocalRotationZ(this Transform transform, float to, float duration)
+    public static Tween TweenLocalRotationZ(this Transform transform, float to, float duration, RotationMode mode)
     {
-        Tween tween = Tween.To(() => transform.localRotation.eulerAngles.z,
-            z => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, z), to, duration);
+        float finalTo = to;
+
+        switch (mode)
+        {
+            case RotationMode.Fast:
+                {
+                    finalTo = AngleUtils.Clamp360(to);
+                }
+                break;
+        }
+
+        Tween tween = Tween.To(() => 
+        {
+            switch(mode)
+            {
+                case RotationMode.Fast:
+                    {
+                        return AngleUtils.Clamp360(transform.localRotation.eulerAngles.z);
+                    }
+            }
+
+            return transform.localRotation.eulerAngles.z;
+        }, 
+        z => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, z), finalTo, duration);
         tween.SetTarget(transform);
         return tween;
     }

@@ -22,7 +22,7 @@ namespace Juce.Tween
 
         internal bool IsActive { get; set; }
         public bool IsPlaying { get; internal set; }
-        internal bool IsCompleted { get; set; }
+        public bool IsCompleted { get; internal set; }
         internal bool IsKilled { get; set; }
         internal bool IsCompletedOrKilled => IsCompleted || IsKilled;
 

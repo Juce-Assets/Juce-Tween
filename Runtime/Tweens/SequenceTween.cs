@@ -119,11 +119,13 @@ namespace Juce.Tween
 
             float progress = float.MaxValue;
 
-            progress = (1 / allTweens.Count) * currTweenIndex;
+            float progressPerTween = (1.0f / allTweens.Count);
+
+            progress = progressPerTween * currTweenIndex;
 
             Tween currTweener = allTweens[currTweenIndex];
 
-            progress += (1 / allTweens.Count) * currTweener.GetProgress();
+            progress += progressPerTween * currTweener.GetProgress();
 
             return progress;
         }

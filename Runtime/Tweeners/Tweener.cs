@@ -90,8 +90,16 @@ namespace Juce.Tween
             {
                 case ResetMode.Restart:
                     {
-                        setter(firstTimeInitialValue);
-                        finalValue = firstTimeFinalValue;
+                        if (Duration > 0)
+                        {
+                            setter(firstTimeInitialValue);
+                            finalValue = firstTimeFinalValue;
+                        }
+                        else
+                        {
+                            setter(firstTimeFinalValue);
+                            finalValue = firstTimeFinalValue;
+                        }
                     }
                     break;
 

@@ -183,7 +183,9 @@ public static class TransformExtensions
             {
                 case RotationMode.Fast:
                     {
-                        return AngleUtils.Clamp360(transform.localRotation.eulerAngles.z);
+                        float deltaAngle = Mathf.DeltaAngle(to, transform.localRotation.eulerAngles.z);
+
+                        return to + deltaAngle;
                     }
             }
 

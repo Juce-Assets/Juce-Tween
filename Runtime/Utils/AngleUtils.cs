@@ -7,11 +7,23 @@ namespace Juce.Tween
     {
         public static float Clamp360(float eulerAngles)
         {
-            float result = eulerAngles - Mathf.CeilToInt(eulerAngles / 360f) * 360f;
+            float result = Mathf.Abs(eulerAngles) - Mathf.CeilToInt(eulerAngles / 360f) * 360f;
 
-            if (result < 0)
+            if (eulerAngles > 0)
             {
-                result += 360f;
+                if (result < 0)
+                {
+                    result += 360f;
+                }
+            }
+            else
+            {
+                result = -result;
+
+                if (result > 0)
+                {
+                    result -= 360f;
+                }
             }
 
             return result;

@@ -11,5 +11,12 @@ namespace Juce.Tween
 
             return color;
         }
+
+        public static Color ChangeColorKeepingAlpha(Color color, Color alphaToKeep)
+        {
+            color.a = alphaToKeep.a;
+
+            return color;
+        }
     }
 }

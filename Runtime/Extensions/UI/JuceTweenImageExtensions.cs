@@ -12,6 +12,14 @@ public static class JuceTweenImageExtensions
         return tween;
     }
 
+    public static Tween TweenColorNoAlpha(this Image image, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => image.color, x => image.color =
+            ColorUtils.ChangeColorKeepingAlpha(x, image.color), to, duration);
+        tween.SetTarget(image);
+        return tween;
+    }
+
     public static Tween TweenColorAlpha(this Image image, float to, float duration)
     {
         float to255 = to * 255.0f;

@@ -12,6 +12,14 @@ public static class JuceTweenOutlineExtensions
         return tween;
     }
 
+    public static Tween TweenColorNoAlpha(this Outline outline, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => outline.effectColor, x => outline.effectColor =
+            ColorUtils.ChangeColorKeepingAlpha(x, outline.effectColor), to, duration);
+        tween.SetTarget(outline);
+        return tween;
+    }
+
     public static Tween TweenColorAlpha(this Outline outline, float to, float duration)
     {
         float to255 = to * 255.0f;

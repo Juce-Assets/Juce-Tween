@@ -18,6 +18,14 @@ public static class JuceTweenCameraExtensions
         return tween;
     }
 
+    public static Tween TweenBackgroundColorNoAlpha(this Camera camera, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => camera.backgroundColor, x => camera.backgroundColor =
+            ColorUtils.ChangeColorKeepingAlpha(x, camera.backgroundColor), to, duration);
+        tween.SetTarget(camera);
+        return tween;
+    }
+
     public static Tween TweenBackgroundColorAlpha(this Camera camera, float to, float duration)
     {
         float to255 = to * 255.0f;

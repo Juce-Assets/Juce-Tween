@@ -25,6 +25,30 @@ public static class JuceTweenMaterialExtensions
         return tween;
     }
 
+    public static Tween TweenColorNoAlpha(this Material material, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => material.color, x => material.color = 
+            ColorUtils.ChangeColorKeepingAlpha(x, material.color), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
+    public static Tween TweenColorNoAlpha(this Material material, Color to, string property, float duration)
+    {
+        Tween tween = Tween.To(() => material.GetColor(property), x => material.SetColor(property, 
+            ColorUtils.ChangeColorKeepingAlpha(x, material.GetColor(property))), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
+    public static Tween TweenColorNoAlpha(this Material material, Color to, int propertyID, float duration)
+    {
+        Tween tween = Tween.To(() => material.GetColor(propertyID), x => material.SetColor(propertyID,
+            ColorUtils.ChangeColorKeepingAlpha(x, material.GetColor(propertyID))), to, duration);
+        tween.SetTarget(material);
+        return tween;
+    }
+
     public static Tween TweenColorAlpha(this Material material, float to, float duration)
     {
         float to255 = to * 255.0f;

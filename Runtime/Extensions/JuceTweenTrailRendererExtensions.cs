@@ -37,6 +37,34 @@ public static class JuceTweenTrailRendererExtensions
         return groupTween;
     }
 
+    public static Tween TweenStartColorNoAlpha(this TrailRenderer trailRenderer, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => trailRenderer.startColor, x => trailRenderer.startColor =
+            ColorUtils.ChangeColorKeepingAlpha(x, trailRenderer.startColor), to, duration);
+        tween.SetTarget(trailRenderer);
+        return tween;
+    }
+
+    public static Tween TweenEndColorNoAlpha(this TrailRenderer trailRenderer, Color to, float duration)
+    {
+        Tween tween = Tween.To(() => trailRenderer.endColor, x => trailRenderer.endColor =
+            ColorUtils.ChangeColorKeepingAlpha(x, trailRenderer.endColor), to, duration);
+        tween.SetTarget(trailRenderer);
+        return tween;
+    }
+
+    public static Tween TweenColorNoAlpha(this TrailRenderer trailRenderer, Color to, float duration)
+    {
+        Tween startTween = TweenStartColorNoAlpha(trailRenderer, to, duration);
+        Tween endTween = TweenEndColorNoAlpha(trailRenderer, to, duration);
+
+        GroupTween groupTween = new GroupTween();
+        groupTween.Add(startTween);
+        groupTween.Add(endTween);
+
+        return groupTween;
+    }
+
     public static Tween TweenStartColorAlpha(this TrailRenderer trailRenderer, float to, float duration)
     {
         float to255 = to * 255.0f;

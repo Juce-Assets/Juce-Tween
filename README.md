@@ -3,6 +3,11 @@
 [![Twitter Follow](https://img.shields.io/badge/twitter-%406uillem-blue.svg?style=flat&label=Follow)](https://twitter.com/6uillem)
 # Juce-Tween
 Welcome to **Juce-Tween**, the open-source tweening library that's part of the Juce Unity tools framework.
-
+ <br/>
+ <br/>
 ![](https://github.com/Juce-Assets/Juce-Tween/blob/master/Misc/LogoShortHeight.png)
+ <br/>
+ <br/>
+ 
+  [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/juceunity)
  

@@ -5,7 +5,7 @@
 Welcome to **Juce-Tween**, the open-source tweening library that's part of the Juce Unity tools framework.
  <br/>
  <br/>
-![](https://github.com/Juce-Assets/Juce-Tween/blob/master/Misc/LogoShortHeight.png)
+![](https://github.com/Juce-Assets/Juce-Tween/blob/develop/Misc/LogoShortHeight.png)
  <br/>
  <br/>
  

@@ -55,6 +55,8 @@ public static class JuceTweenTextMeshProExtensions
         return tween;
     }
 
+#if JUCE_EXPERIMENTAL
+
     public static Tween TweenCharColor(this TextMeshProUGUI textMeshProUGUI, int charIndex, Color to, float duration)
     {
         if (textMeshProUGUI.textInfo.characterInfo.Length <= charIndex)
@@ -224,6 +226,8 @@ public static class JuceTweenTextMeshProExtensions
         Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, to);
         return textMeshProUGUI.TweenCharTransform(charIndex, matrix, duration);
     }
+#endif
+
 }
 
 #endif

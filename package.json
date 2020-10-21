@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "displayName": "Juce-Tween",
   "description": "This is an example package",
+    "dependencies": {
+	"com.juce.utils": "0.0.1"
+  },
   "keywords": [
     "Juce",
     "Tween"

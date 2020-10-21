@@ -16,13 +16,13 @@ public class TransformTests : MonoBehaviour
     {
         sequenceTween = new SequenceTween();
 
-        sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 0));
-        sequenceTween.Append(toTween.TweenPosition(new Vector2(1, 0), 1));
-        sequenceTween.Join(toTween.TweenLocalScale(new Vector2(1.4f, 1.4f), 1));
-        sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, 360.0f), 1));
-        sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 1));
-        sequenceTween.Join(toTween.TweenLocalScale(new Vector2(1.0f, 1.0f), 1));
-        sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, -360.0f), 1));
+        //sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 0));
+        //sequenceTween.Append(toTween.TweenPosition(new Vector2(1, 0), 1));
+        //sequenceTween.Join(toTween.TweenLocalScale(new Vector2(1.4f, 1.4f), 1));
+        //sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, 360.0f), 1));
+        //sequenceTween.Append(toTween.TweenPosition(new Vector2(-1, 0), 1));
+        //sequenceTween.Join(toTween.TweenLocalScale(new Vector2(1.0f, 1.0f), 1));
+        //sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, -360.0f), 1));
 
         sequenceTween.SetEase(animationCurve);
         sequenceTween.SetLoops(3, ResetMode.Restart);

@@ -28,5 +28,15 @@ namespace Juce.Tween
 
             return result;
         }
+
+        public static Vector3 Clamp360(Vector3 eulerAngles)
+        {
+            return new Vector3(Clamp360(eulerAngles.x), Clamp360(eulerAngles.y), Clamp360(eulerAngles.z));
+        }
+
+        public static Vector3 DeltaAngle(Vector3 current, Vector3 target)
+        {
+            return new Vector3(Mathf.DeltaAngle(current.x, target.x), Mathf.DeltaAngle(current.y, target.y), Mathf.DeltaAngle(current.z, target.z));
+        }
     }
 }

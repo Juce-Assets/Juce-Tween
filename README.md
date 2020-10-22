@@ -1,5 +1,5 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Juce-Assets/Juce-Tween/issues)
-[![HitCount](http://hits.dwyl.com/{juce-assets}/{juce-feedbacks}.svg)](http://hits.dwyl.com/{juce-assets}/{juce-tween})
+[![HitCount](http://hits.dwyl.com/Juce-Assets/Juce-Tween.svg)](http://hits.dwyl.com/Juce-Assets/Juce-Tween)
 [![Twitter Follow](https://img.shields.io/badge/twitter-%406uillem-blue.svg?style=flat&label=Follow)](https://twitter.com/6uillem)
 # Juce-Tween
 Welcome to **Juce-Tween**, the open-source tweening library that's part of the Juce Unity tools framework.

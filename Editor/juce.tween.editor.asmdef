@@ -1,7 +1,8 @@
 {
     "name": "Juce.Tween.Editor",
     "references": [
-        "GUID:1d2fff02b94337c4a9c3f4f83dfe63b0"
+        "GUID:1765b9cf2ac90c24c957166617f61cc1",
+        "GUID:9a64ff96d3b16d7498c8f46b660d81a0"
     ],
     "includePlatforms": [
         "Editor"

@@ -11,6 +11,8 @@ namespace Juce.Tween
 
         private float timeScale;
 
+        public int AliveTweensCount => aliveTweens.Count;
+
         public static float TimeScale
         {
             get { return Instance.timeScale; }

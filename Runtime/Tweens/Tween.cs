@@ -303,6 +303,11 @@ namespace Juce.Tween
 
             Deactivate(); 
 
+            if(LoopsLeft > 0)
+            {
+                return;
+            }
+
             ForcedFinish = false;
 
             IsPlaying = false;

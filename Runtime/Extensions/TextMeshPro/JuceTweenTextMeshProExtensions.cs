@@ -11,14 +11,14 @@ public static class JuceTweenTextMeshProExtensions
 {
     public static Tween TweenFontSize(this TextMeshProUGUI textMeshProUGUI, float to, float duration)
     {
-        Tween tween = Tween.To(() => textMeshProUGUI.fontSize, x => textMeshProUGUI.fontSize = x, to, duration);
+        Tween tween = Tween.To(() => textMeshProUGUI.fontSize, x => textMeshProUGUI.fontSize = x, () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }
 
     public static Tween TweenColor(this TextMeshProUGUI textMeshProUGUI, Color to, float duration)
     {
-        Tween tween = Tween.To(() => textMeshProUGUI.color, x => textMeshProUGUI.color = x, to, duration);
+        Tween tween = Tween.To(() => textMeshProUGUI.color, x => textMeshProUGUI.color = x, () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }
@@ -27,14 +27,14 @@ public static class JuceTweenTextMeshProExtensions
     {
         float to255 = to * 255.0f;
         Tween tween = Tween.To(() => textMeshProUGUI.color.a, x => textMeshProUGUI.color =
-            ColorUtils.ChangeAlpha(textMeshProUGUI.color, x), to, duration);
+            ColorUtils.ChangeAlpha(textMeshProUGUI.color, x), () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }
 
     public static Tween TweenFaceColor(this TextMeshProUGUI textMeshProUGUI, Color to, float duration)
     {
-        Tween tween = Tween.To(() => textMeshProUGUI.faceColor, x => textMeshProUGUI.faceColor = x, to, duration);
+        Tween tween = Tween.To(() => textMeshProUGUI.faceColor, x => textMeshProUGUI.faceColor = x, () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }
@@ -43,14 +43,14 @@ public static class JuceTweenTextMeshProExtensions
     {
         float to255 = to * 255.0f;
         Tween tween = Tween.To(() => textMeshProUGUI.faceColor.a, x => textMeshProUGUI.faceColor =
-            ColorUtils.ChangeAlpha(textMeshProUGUI.faceColor, x), to, duration);
+            ColorUtils.ChangeAlpha(textMeshProUGUI.faceColor, x), () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }
 
     public static Tween TweenMaxVisibleCharacters(this TextMeshProUGUI textMeshProUGUI, int to, float duration)
     {
-        Tween tween = Tween.To(() => textMeshProUGUI.maxVisibleCharacters, x => textMeshProUGUI.maxVisibleCharacters = x, to, duration);
+        Tween tween = Tween.To(() => textMeshProUGUI.maxVisibleCharacters, x => textMeshProUGUI.maxVisibleCharacters = x, () => to, duration);
         tween.SetTarget(textMeshProUGUI);
         return tween;
     }

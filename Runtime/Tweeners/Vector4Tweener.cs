@@ -5,8 +5,8 @@ namespace Juce.Tween
 {
 	internal class Vector4Tweener : Tweener<Vector4>
 	{
-		internal Vector4Tweener(Getter getter, Setter setter, Vector4 finalValue, float duration)
-			: base(getter, setter, finalValue, duration, new Vector4Interpolator())
+		internal Vector4Tweener(Getter currValueGetter, Setter setter, Getter finalValueGetter, float duration)
+			: base(currValueGetter, setter, finalValueGetter, duration, new Vector4Interpolator())
 		{
 
 		}

@@ -7,14 +7,14 @@ public static class JuceTweenLayoutElementExtensions
 {
     public static Tween TweenFlexibleWidth(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.flexibleWidth, x => layoutElement.flexibleWidth = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.flexibleWidth, x => layoutElement.flexibleWidth = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }
 
     public static Tween TweenFlexibleHeight(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.flexibleHeight, x => layoutElement.flexibleHeight = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.flexibleHeight, x => layoutElement.flexibleHeight = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }
@@ -33,14 +33,14 @@ public static class JuceTweenLayoutElementExtensions
 
     public static Tween TweenMinWidth(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.minWidth, x => layoutElement.minWidth = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.minWidth, x => layoutElement.minWidth = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }
 
     public static Tween TweenMinHeight(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.minHeight, x => layoutElement.minHeight = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.minHeight, x => layoutElement.minHeight = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }
@@ -59,14 +59,14 @@ public static class JuceTweenLayoutElementExtensions
 
     public static Tween TweenPreferedWidth(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }
 
     public static Tween TweenPreferedHeight(this LayoutElement layoutElement, float to, float duration)
     {
-        Tween tween = Tween.To(() => layoutElement.preferredHeight, x => layoutElement.preferredHeight = x, to, duration);
+        Tween tween = Tween.To(() => layoutElement.preferredHeight, x => layoutElement.preferredHeight = x, () => to, duration);
         tween.SetTarget(layoutElement);
         return tween;
     }

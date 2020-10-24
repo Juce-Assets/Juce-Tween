@@ -6,5 +6,6 @@ namespace Juce.Tween
     {
         Fast,
         FastBeyond360,
+        Add,
     }
 }

@@ -14,8 +14,9 @@ namespace Juce.Tween
 
         private readonly IInterpolator<T> interpolator;
 
-        private readonly Getter getter;
+        private readonly Getter currValueGetter;
         private readonly Setter setter;
+        private readonly Getter finalValueGetter;
 
         private EaseDelegate easeFunction;
         private float elapsedTime;
@@ -30,11 +31,11 @@ namespace Juce.Tween
         public bool IsCompleted { get; protected set; }
         public float Progress { get => elapsedTime / Duration; }
 
-        internal Tweener(Getter getter, Setter setter, T finalValue, float duration, IInterpolator<T> interpolator)
+        internal Tweener(Getter currValueGetter, Setter setter, Getter finalValueGetter, float duration, IInterpolator<T> interpolator)
         {
-            this.getter = getter;
-            this.finalValue = finalValue;
+            this.currValueGetter = currValueGetter;
             this.setter = setter;
+            this.finalValueGetter = finalValueGetter;
             Duration = duration;
             this.interpolator = interpolator;
 
@@ -68,7 +69,8 @@ namespace Juce.Tween
 
             elapsedTime = 0.0f;
 
-            this.initialValue = getter();
+            this.initialValue = currValueGetter();
+            this.finalValue = finalValueGetter();
 
             if (firstTime)
             {
@@ -88,7 +90,7 @@ namespace Juce.Tween
 
             switch (mode)
             {
-                case ResetMode.Restart:
+                case ResetMode.RestartValues:
                     {
                         if (Duration > 0)
                         {
@@ -103,10 +105,16 @@ namespace Juce.Tween
                     }
                     break;
 
-                case ResetMode.Incremental:
+                case ResetMode.CurrentValues:
+                    {
+                        finalValue = firstTimeFinalValue;
+                    }
+                    break;
+
+                case ResetMode.IncrementalValues:
                     {
                         T difference = interpolator.Subtract(firstTimeInitialValue, firstTimeFinalValue);
-                        finalValue = interpolator.Add(getter(), difference);
+                        finalValue = interpolator.Add(currValueGetter(), difference);
                     }
                     break;
             }

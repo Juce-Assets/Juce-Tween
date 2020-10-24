@@ -7,7 +7,7 @@ public static class JuceTweenGraphicExtensions
 {
     public static Tween TweenColor(this Graphic graphic, Color to, float duration)
     {
-        Tween tween = Tween.To(() => graphic.color, x => graphic.color = x, to, duration);
+        Tween tween = Tween.To(() => graphic.color, x => graphic.color = x, () => to, duration);
         tween.SetTarget(graphic);
         return tween;
     }
@@ -15,7 +15,7 @@ public static class JuceTweenGraphicExtensions
     public static Tween TweenColorNoAlpha(this Graphic graphic, Color to, float duration)
     {
         Tween tween = Tween.To(() => graphic.color, x => graphic.color =
-            ColorUtils.ChangeColorKeepingAlpha(x, graphic.color), to, duration);
+            ColorUtils.ChangeColorKeepingAlpha(x, graphic.color), () => to, duration);
         tween.SetTarget(graphic);
         return tween;
     }
@@ -24,7 +24,7 @@ public static class JuceTweenGraphicExtensions
     {
         float to255 = to * 255.0f;
         Tween tween = Tween.To(() => graphic.color.a, x => graphic.color =
-            ColorUtils.ChangeAlpha(graphic.color, x), to, duration);
+            ColorUtils.ChangeAlpha(graphic.color, x), () => to, duration);
         tween.SetTarget(graphic);
         return tween;
     }

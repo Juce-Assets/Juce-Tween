@@ -146,7 +146,7 @@ namespace Juce.Tween
         {
             Kill();
 
-            Reset(ResetMode.Restart);
+            Reset(ResetMode.RestartValues);
 
             Play();
         }

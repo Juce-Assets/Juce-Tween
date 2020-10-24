@@ -4,7 +4,8 @@ namespace Juce.Tween
 {
     public enum ResetMode
     {
-        Restart,
-        Incremental,
+        RestartValues,
+        CurrentValues,
+        IncrementalValues,
     }
 }

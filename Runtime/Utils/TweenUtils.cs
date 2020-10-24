@@ -72,6 +72,8 @@ namespace Juce.Tween
             if (!active)
             {
                 ++currTweenIndex;
+
+                return UpdateSequential(allTweens, ref currTweenIndex);
             }
 
             return false;

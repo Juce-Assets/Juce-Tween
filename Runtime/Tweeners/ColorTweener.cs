@@ -5,8 +5,8 @@ namespace Juce.Tween
 {
 	internal class ColorTweener : Tweener<Color>
 	{
-		internal ColorTweener(Getter getter, Setter setter, Color finalValue, float duration)
-			: base(getter, setter, finalValue, duration, new ColorInterpolator())
+		internal ColorTweener(Getter currValueGetter, Setter setter, Getter finalValueGetter, float duration)
+			: base(currValueGetter, setter, finalValueGetter, duration, new ColorInterpolator())
 		{
 
 		}

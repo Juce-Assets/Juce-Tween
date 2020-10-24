@@ -6,14 +6,14 @@ public static class LineRendererExtensions
 {
     public static Tween TweenStartColor(this LineRenderer lineRenderer, Color to, float duration)
     {
-        Tween tween = Tween.To(() => lineRenderer.startColor, x => lineRenderer.startColor = x, to, duration);
+        Tween tween = Tween.To(() => lineRenderer.startColor, x => lineRenderer.startColor = x, () => to, duration);
         tween.SetTarget(lineRenderer);
         return tween;
     }
 
     public static Tween TweenEndColor(this LineRenderer lineRenderer, Color to, float duration)
     {
-        Tween tween = Tween.To(() => lineRenderer.endColor, x => lineRenderer.endColor = x, to, duration);
+        Tween tween = Tween.To(() => lineRenderer.endColor, x => lineRenderer.endColor = x, () => to, duration);
         tween.SetTarget(lineRenderer);
         return tween;
     }
@@ -32,14 +32,14 @@ public static class LineRendererExtensions
 
     public static Tween TweenStartWidth(this LineRenderer lineRenderer, float to, float duration)
     {
-        Tween tween = Tween.To(() => lineRenderer.startWidth, x => lineRenderer.startWidth = x, to, duration);
+        Tween tween = Tween.To(() => lineRenderer.startWidth, x => lineRenderer.startWidth = x, () => to, duration);
         tween.SetTarget(lineRenderer);
         return tween;
     }
 
     public static Tween TweenEndWidth(this LineRenderer lineRenderer, float to, float duration)
     {
-        Tween tween = Tween.To(() => lineRenderer.endWidth, x => lineRenderer.endWidth = x, to, duration);
+        Tween tween = Tween.To(() => lineRenderer.endWidth, x => lineRenderer.endWidth = x, () => to, duration);
         tween.SetTarget(lineRenderer);
         return tween;
     }

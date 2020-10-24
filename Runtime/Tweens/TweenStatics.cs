@@ -5,157 +5,157 @@ namespace Juce.Tween
 {
     public partial class Tween
     {
-        public static Tween To(Tweener<int>.Getter getter, Tweener<int>.Setter setter,
-            int finalValue, float duration)
+        public static Tween To(Tweener<int>.Getter currValueGetter, Tweener<int>.Setter setter,
+            Tweener<int>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new IntTweener(getter, setter, finalValue, duration));
+            tween.Add(new IntTweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<float>.Getter getter, Tweener<float>.Setter setter,
-            float finalValue, float duration)
+        public static Tween To(Tweener<float>.Getter currValueGetter, Tweener<float>.Setter setter,
+            Tweener<float>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new FloatTweener(getter, setter, finalValue, duration));
+            tween.Add(new FloatTweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<Vector2>.Getter getter, Tweener<Vector2>.Setter setter,
-            Vector2 finalValue, float duration)
+        public static Tween To(Tweener<Vector2>.Getter currValueGetter, Tweener<Vector2>.Setter setter,
+            Tweener<Vector2>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new Vector2Tweener(getter, setter, finalValue, duration));
+            tween.Add(new Vector2Tweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<Vector3>.Getter getter, Tweener<Vector3>.Setter setter,
-            Vector3 finalValue, float duration)
+        public static Tween To(Tweener<Vector3>.Getter currValueGetter, Tweener<Vector3>.Setter setter,
+            Tweener<Vector3>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new Vector3Tweener(getter, setter, finalValue, duration));
+            tween.Add(new Vector3Tweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<Vector4>.Getter getter, Tweener<Vector4>.Setter setter,
-            Vector4 finalValue, float duration)
+        public static Tween To(Tweener<Vector4>.Getter currValueGetter, Tweener<Vector4>.Setter setter,
+            Tweener<Vector4>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new Vector4Tweener(getter, setter, finalValue, duration));
+            tween.Add(new Vector4Tweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<Rect>.Getter getter, Tweener<Rect>.Setter setter,
-            Rect finalValue, float duration)
+        public static Tween To(Tweener<Rect>.Getter currValueGetter, Tweener<Rect>.Setter setter,
+            Tweener<Rect>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new RectTweener(getter, setter, finalValue, duration));
+            tween.Add(new RectTweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
-        public static Tween To(Tweener<Color>.Getter getter, Tweener<Color>.Setter setter,
-            Color finalValue, float duration)
+        public static Tween To(Tweener<Color>.Getter currValueGetter, Tweener<Color>.Setter setter,
+            Tweener<Color>.Getter finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            tween.Add(new ColorTweener(getter, setter, finalValue, duration));
+            tween.Add(new ColorTweener(currValueGetter, setter, finalValueGetter, duration));
             return tween;
         }
 
         // ---
 
-        public static Tween To(Tweener<int>.Getter[] getter, Tweener<int>.Setter[] setter,
-          int[] finalValue, float duration)
+        public static Tween To(Tweener<int>.Getter[] currValueGetter, Tweener<int>.Setter[] setter,
+          Tweener<int>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new IntTweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new IntTweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<float>.Getter[] getter, Tweener<float>.Setter[] setter,
-            float[] finalValue, float duration)
+        public static Tween To(Tweener<float>.Getter[] currValueGetter, Tweener<float>.Setter[] setter,
+            Tweener<float>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new FloatTweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new FloatTweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<Vector2>.Getter[] getter, Tweener<Vector2>.Setter[] setter,
-            Vector2[] finalValue, float duration)
+        public static Tween To(Tweener<Vector2>.Getter[] currValueGetter, Tweener<Vector2>.Setter[] setter,
+            Tweener<Vector2>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new Vector2Tweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new Vector2Tweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<Vector3>.Getter[] getter, Tweener<Vector3>.Setter[] setter,
-            Vector3[] finalValue, float duration)
+        public static Tween To(Tweener<Vector3>.Getter[] currValueGetter, Tweener<Vector3>.Setter[] setter,
+            Tweener<Vector3>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new Vector3Tweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new Vector3Tweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<Vector4>.Getter[] getter, Tweener<Vector4>.Setter[] setter,
-            Vector4[] finalValue, float duration)
+        public static Tween To(Tweener<Vector4>.Getter[] currValueGetter, Tweener<Vector4>.Setter[] setter,
+            Tweener<Vector4>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new Vector4Tweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new Vector4Tweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<Rect>.Getter[] getter, Tweener<Rect>.Setter[] setter,
-            Rect[] finalValue, float duration)
+        public static Tween To(Tweener<Rect>.Getter[] currValueGetter, Tweener<Rect>.Setter[] setter,
+            Tweener<Rect>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new RectTweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new RectTweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;
         }
 
-        public static Tween To(Tweener<Color>.Getter[] getter, Tweener<Color>.Setter[] setter,
-            Color[] finalValue, float duration)
+        public static Tween To(Tweener<Color>.Getter[] currValueGetter, Tweener<Color>.Setter[] setter,
+            Tweener<Color>.Getter[] finalValueGetter, float duration)
         {
             InterpolationTween tween = new InterpolationTween();
-            for (int i = 0; i < getter.Length; ++i)
+            for (int i = 0; i < currValueGetter.Length; ++i)
             {
-                if (setter.Length > i && finalValue.Length > i)
+                if (setter.Length > i && finalValueGetter.Length > i)
                 {
-                    tween.Add(new ColorTweener(getter[i], setter[i], finalValue[i], duration));
+                    tween.Add(new ColorTweener(currValueGetter[i], setter[i], finalValueGetter[i], duration));
                 }
             }
             return tween;

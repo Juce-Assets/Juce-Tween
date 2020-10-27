@@ -55,6 +55,34 @@ public static class JuceTweenTextMeshProExtensions
         return tween;
     }
 
+    public static Tween TweenCharacterSpacing(this TextMeshProUGUI textMeshProUGUI, float to, float duration)
+    {
+        Tween tween = Tween.To(() => textMeshProUGUI.characterSpacing, x => textMeshProUGUI.characterSpacing = x, () => to, duration);
+        tween.SetTarget(textMeshProUGUI);
+        return tween;
+    }
+
+    public static Tween TweenWordSpacing(this TextMeshProUGUI textMeshProUGUI, float to, float duration)
+    {
+        Tween tween = Tween.To(() => textMeshProUGUI.wordSpacing, x => textMeshProUGUI.wordSpacing = x, () => to, duration);
+        tween.SetTarget(textMeshProUGUI);
+        return tween;
+    }
+
+    public static Tween TweenLineSpacing(this TextMeshProUGUI textMeshProUGUI, float to, float duration)
+    {
+        Tween tween = Tween.To(() => textMeshProUGUI.lineSpacing, x => textMeshProUGUI.lineSpacing = x, () => to, duration);
+        tween.SetTarget(textMeshProUGUI);
+        return tween;
+    }
+
+    public static Tween TweenParagraphSpacingSpacing(this TextMeshProUGUI textMeshProUGUI, float to, float duration)
+    {
+        Tween tween = Tween.To(() => textMeshProUGUI.paragraphSpacing, x => textMeshProUGUI.paragraphSpacing = x, () => to, duration);
+        tween.SetTarget(textMeshProUGUI);
+        return tween;
+    }
+
 #if JUCE_EXPERIMENTAL
 
     public static Tween TweenCharColor(this TextMeshProUGUI textMeshProUGUI, int charIndex, Color to, float duration)

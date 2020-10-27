@@ -24,9 +24,6 @@ public class TransformTests : MonoBehaviour
         //sequenceTween.Join(toTween.TweenLocalScale(new Vector2(1.0f, 1.0f), 1));
         //sequenceTween.Join(toTween.TweenRotation(new Vector3(0.0f, 0.0f, -360.0f), 1));
 
-        sequenceTween.SetEase(animationCurve);
-        sequenceTween.SetLoops(3, ResetMode.Restart);
-
         sequenceTween.Play();
     }
 

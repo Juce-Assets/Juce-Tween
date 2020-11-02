@@ -18,13 +18,13 @@ namespace Juce.Tween
         internal int LoopsLeft { get; set; }
         internal ResetMode LoopsResetMode { get; set; }
 
+        internal bool IsActive { get; set; }
         internal bool ForcedFinish { get; set; }
 
-        internal bool IsActive { get; set; }
         public bool IsPlaying { get; internal set; }
         public bool IsCompleted { get; internal set; }
-        internal bool IsKilled { get; set; }
-        internal bool IsCompletedOrKilled => IsCompleted || IsKilled;
+        public bool IsKilled { get; set; }
+        public bool IsCompletedOrKilled => IsCompleted || IsKilled;
 
         public event Action<float> onTimeScaleChange;
         public event Action onStart;
@@ -462,6 +462,11 @@ namespace Juce.Tween
         protected virtual float GetProgressInternal()
         {
             return 1.0f;
+        }
+
+        public virtual int GetNestedTweenChildsCount()
+        {
+            return 0;
         }
     }
 }

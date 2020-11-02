@@ -61,8 +61,6 @@ namespace Juce.Tween
             return tween;
         }
 
-        // ---
-
         public static Tween To(Tweener<int>.Getter[] currValueGetter, Tweener<int>.Setter[] setter,
           Tweener<int>.Getter[] finalValueGetter, float duration)
         {

@@ -10,7 +10,7 @@ namespace Juce.Tween
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.LabelField($"Alive tweens: {CustomTarget.AliveTweensCount}", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"Alive tweens: {CustomTarget.GetAliveTweensCounts()}", EditorStyles.boldLabel);
         }
     }
 }

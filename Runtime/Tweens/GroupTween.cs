@@ -132,6 +132,18 @@ namespace Juce.Tween
             return progress;
         }
 
+        public override int GetNestedTweenChildsCount()
+        {
+            int nestedChilds = 0;
+
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                nestedChilds += allTweens[i].GetNestedTweenChildsCount() + 1;
+            }
+
+            return nestedChilds;
+        }
+
         public void Add(Tween tween)
         {
             if (tween == null)

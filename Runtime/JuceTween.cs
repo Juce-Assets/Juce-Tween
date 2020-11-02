@@ -11,8 +11,6 @@ namespace Juce.Tween
 
         private float timeScale;
 
-        public int AliveTweensCount => aliveTweens.Count;
-
         public static float TimeScale
         {
             get { return Instance.timeScale; }
@@ -32,6 +30,18 @@ namespace Juce.Tween
         private void Init()
         {
             timeScale = 1.0f;
+        }
+
+        public int GetAliveTweensCounts()
+        {
+            int aliveTweensCount = 0;
+
+            for(int i = 0; i < aliveTweens.Count; ++i)
+            {
+                aliveTweensCount += aliveTweens[i].GetNestedTweenChildsCount() + 1;
+            }
+
+            return aliveTweensCount;
         }
 
         internal static void Add(Tween tween, bool syncNow)

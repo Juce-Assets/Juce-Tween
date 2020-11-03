@@ -24,6 +24,22 @@ public static class JuceTweenRectTransformExtensions
         return tween;
     }
 
+    public static Tween TweenAnchoredPositionX(this RectTransform transform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => transform.anchoredPosition.x,
+            x => transform.anchoredPosition = new Vector2(x, transform.anchoredPosition.y), () => to, duration);
+        tween.SetTarget(transform);
+        return tween;
+    }
+
+    public static Tween TweenAnchoredPositionY(this RectTransform transform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => transform.anchoredPosition.y,
+            y => transform.anchoredPosition = new Vector2(transform.anchoredPosition.x, y), () => to, duration);
+        tween.SetTarget(transform);
+        return tween;
+    }
+
     public static Tween TweenAnchoredPosition3D(this RectTransform rectTransform, Vector3 to, float duration)
     {
         Tween tween = Tween.To(() => rectTransform.anchoredPosition3D, x => rectTransform.anchoredPosition3D = x, () => to, duration);

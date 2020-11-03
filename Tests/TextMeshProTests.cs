@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
-using Juce.Tween;
+﻿using Juce.Tween;
 using TMPro;
+using UnityEngine;
 
 public class TextMeshProTests : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class TextMeshProTests : MonoBehaviour
     private SequenceTween sequenceTween;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sequenceTween = new SequenceTween();
 
@@ -28,7 +27,7 @@ public class TextMeshProTests : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("c"))
         {

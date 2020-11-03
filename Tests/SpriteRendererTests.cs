@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public class SpriteRendererTests : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class SpriteRendererTests : MonoBehaviour
     private SequenceTween sequenceTween;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sequenceTween = new SequenceTween();
 
@@ -22,7 +21,7 @@ public class SpriteRendererTests : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("c"))
         {

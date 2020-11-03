@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Juce.Tween
 {
@@ -11,7 +10,7 @@ namespace Juce.Tween
             {
                 float newT = animationCurve.Evaluate(t);
 
-                return a + ((b - a) * newT); 
+                return a + ((b - a) * newT);
             };
 
             return result;

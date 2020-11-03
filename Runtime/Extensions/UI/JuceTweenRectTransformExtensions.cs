@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public static class JuceTweenRectTransformExtensions
 {
@@ -24,6 +23,7 @@ public static class JuceTweenRectTransformExtensions
         tween.SetTarget(rectTransform);
         return tween;
     }
+
     public static Tween TweenAnchoredPosition3D(this RectTransform rectTransform, Vector3 to, float duration)
     {
         Tween tween = Tween.To(() => rectTransform.anchoredPosition3D, x => rectTransform.anchoredPosition3D = x, () => to, duration);
@@ -47,7 +47,7 @@ public static class JuceTweenRectTransformExtensions
 
     public static Tween TweenSizeDeltaX(this RectTransform rectTransform, float to, float duration)
     {
-        Tween tween = Tween.To(() => rectTransform.sizeDelta.x, 
+        Tween tween = Tween.To(() => rectTransform.sizeDelta.x,
             x => rectTransform.sizeDelta = new Vector2(x, rectTransform.sizeDelta.y), () => to, duration);
         tween.SetTarget(rectTransform);
         return tween;

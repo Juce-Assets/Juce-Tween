@@ -103,8 +103,8 @@ namespace Juce.Tween
                 Tween currTween = allTweens[i];
 
                 float currDuration = currTween.GetDuration();
-                
-                if(currDuration > duration)
+
+                if (currDuration > duration)
                 {
                     duration = currDuration;
                 }

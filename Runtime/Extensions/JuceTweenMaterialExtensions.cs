@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public static class JuceTweenMaterialExtensions
 {
@@ -27,7 +26,7 @@ public static class JuceTweenMaterialExtensions
 
     public static Tween TweenColorNoAlpha(this Material material, Color to, float duration)
     {
-        Tween tween = Tween.To(() => material.color, x => material.color = 
+        Tween tween = Tween.To(() => material.color, x => material.color =
             ColorUtils.ChangeColorKeepingAlpha(x, material.color), () => to, duration);
         tween.SetTarget(material);
         return tween;
@@ -35,7 +34,7 @@ public static class JuceTweenMaterialExtensions
 
     public static Tween TweenColorNoAlpha(this Material material, Color to, string property, float duration)
     {
-        Tween tween = Tween.To(() => material.GetColor(property), x => material.SetColor(property, 
+        Tween tween = Tween.To(() => material.GetColor(property), x => material.SetColor(property,
             ColorUtils.ChangeColorKeepingAlpha(x, material.GetColor(property))), () => to, duration);
         tween.SetTarget(material);
         return tween;

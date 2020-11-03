@@ -6,7 +6,6 @@ namespace Juce.Tween
     {
         public static void LogValidateError(Type type)
         {
-
         }
     }
 }

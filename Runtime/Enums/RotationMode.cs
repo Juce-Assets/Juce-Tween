@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Juce.Tween
+﻿namespace Juce.Tween
 {
     public enum RotationMode
     {

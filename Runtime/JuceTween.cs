@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Juce.Utils.Singletons;
+using System;
 using System.Collections.Generic;
-using Juce.Utils.Singletons;
 
 namespace Juce.Tween
 {
@@ -36,7 +36,7 @@ namespace Juce.Tween
         {
             int aliveTweensCount = 0;
 
-            for(int i = 0; i < aliveTweens.Count; ++i)
+            for (int i = 0; i < aliveTweens.Count; ++i)
             {
                 aliveTweensCount += aliveTweens[i].GetNestedTweenChildsCount() + 1;
             }
@@ -56,7 +56,7 @@ namespace Juce.Tween
                 Instance.aliveTweens.Add(tween);
             }
 
-            if(syncNow)
+            if (syncNow)
             {
                 Instance.UpdateTweens();
             }

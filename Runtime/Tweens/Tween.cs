@@ -27,11 +27,17 @@ namespace Juce.Tween
         public bool IsCompletedOrKilled => IsCompleted || IsKilled;
 
         public event Action<float> onTimeScaleChange;
+
         public event Action onStart;
+
         public event Action onUpdate;
+
         public event Action onComplete;
+
         public event Action onKill;
+
         public event Action onCompleteOrKill;
+
         public event Action onLoop;
 
         internal Tween()
@@ -132,7 +138,7 @@ namespace Juce.Tween
                 return;
             }
 
-            if(IsNested)
+            if (IsNested)
             {
                 return;
             }
@@ -296,14 +302,14 @@ namespace Juce.Tween
                 return;
             }
 
-            if(IsCompletedOrKilled)
+            if (IsCompletedOrKilled)
             {
                 return;
             }
 
-            Deactivate(); 
+            Deactivate();
 
-            if(LoopsLeft > 0)
+            if (LoopsLeft > 0)
             {
                 return;
             }
@@ -416,42 +422,34 @@ namespace Juce.Tween
 
         protected virtual void SetTimeScaleInternal(float timeScale)
         {
-
         }
 
         protected virtual void SetEaseInternal(EaseDelegate easeFunction)
         {
-
         }
 
         protected virtual void ActivateInternal()
         {
-
         }
 
         protected virtual void StartInternal()
         {
-
         }
 
         protected virtual void ResetInternal(ResetMode resetMode)
         {
-
         }
 
         protected virtual void CompleteInternal()
         {
-
         }
 
         protected virtual void KillInternal()
         {
-
         }
 
         protected virtual void UpdateInternal()
         {
-
         }
 
         protected virtual float GetDurationInternal()

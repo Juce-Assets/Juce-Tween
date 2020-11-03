@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public static class TransformExtensions
 {
@@ -13,7 +12,7 @@ public static class TransformExtensions
 
     public static Tween TweenPositionX(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.position.x, 
+        Tween tween = Tween.To(() => transform.position.x,
             x => transform.position = new Vector3(x, transform.position.y, transform.position.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -21,7 +20,7 @@ public static class TransformExtensions
 
     public static Tween TweenPositionY(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.position.y, 
+        Tween tween = Tween.To(() => transform.position.y,
             y => transform.position = new Vector3(transform.position.x, y, transform.position.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -29,7 +28,7 @@ public static class TransformExtensions
 
     public static Tween TweenPositionZ(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.position.z, 
+        Tween tween = Tween.To(() => transform.position.z,
             z => transform.position = new Vector3(transform.position.x, transform.position.y, z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -44,7 +43,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalPositionX(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localPosition.x, 
+        Tween tween = Tween.To(() => transform.localPosition.x,
             x => transform.localPosition = new Vector3(x, transform.localPosition.y, transform.localPosition.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -52,7 +51,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalPositionY(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localPosition.y, 
+        Tween tween = Tween.To(() => transform.localPosition.y,
             y => transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -60,7 +59,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalPositionZ(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localPosition.z, 
+        Tween tween = Tween.To(() => transform.localPosition.z,
             z => transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -223,7 +222,7 @@ public static class TransformExtensions
 
             return transform.localRotation.eulerAngles.y;
         },
-        y => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, y, transform.localRotation.eulerAngles.z), 
+        y => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, y, transform.localRotation.eulerAngles.z),
         () =>
         {
             if (mode == RotationMode.Add)
@@ -246,15 +245,15 @@ public static class TransformExtensions
             finalTo = AngleUtils.Clamp360(to);
         }
 
-        Tween tween = Tween.To(() => 
+        Tween tween = Tween.To(() =>
         {
-            if(mode == RotationMode.Fast)
+            if (mode == RotationMode.Fast)
             {
                 return finalTo + Mathf.DeltaAngle(finalTo, transform.localRotation.eulerAngles.z);
             }
 
             return transform.localRotation.eulerAngles.z;
-        }, 
+        },
         z => transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -269,7 +268,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalScaleX(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localScale.x, 
+        Tween tween = Tween.To(() => transform.localScale.x,
             x => transform.localScale = new Vector3(x, transform.localScale.y, transform.localScale.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -277,7 +276,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalScaleY(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localScale.y, 
+        Tween tween = Tween.To(() => transform.localScale.y,
             y => transform.localScale = new Vector3(transform.localScale.x, y, transform.localScale.z), () => to, duration);
         tween.SetTarget(transform);
         return tween;
@@ -285,7 +284,7 @@ public static class TransformExtensions
 
     public static Tween TweenLocalScaleZ(this Transform transform, float to, float duration)
     {
-        Tween tween = Tween.To(() => transform.localScale.z, 
+        Tween tween = Tween.To(() => transform.localScale.z,
             z => transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, z), () => to, duration);
         tween.SetTarget(transform);
         return tween;

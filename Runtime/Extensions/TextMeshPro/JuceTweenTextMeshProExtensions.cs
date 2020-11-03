@@ -1,11 +1,8 @@
-﻿
-#if JUCE_TEXT_MESH_PRO_EXTENSIONS
+﻿#if JUCE_TEXT_MESH_PRO_EXTENSIONS
 
-using System;
-using UnityEngine;
 using Juce.Tween;
-
 using TMPro;
+using UnityEngine;
 
 public static class JuceTweenTextMeshProExtensions
 {
@@ -88,7 +85,7 @@ public static class JuceTweenTextMeshProExtensions
     public static Tween TweenCharColor(this TextMeshProUGUI textMeshProUGUI, int charIndex, Color to, float duration)
     {
         if (textMeshProUGUI.textInfo.characterInfo.Length <= charIndex)
-        { 
+        {
             throw new ArgumentNullException($"Char index was out of range at {nameof(TweenCharColor)}");
         }
 
@@ -255,7 +252,6 @@ public static class JuceTweenTextMeshProExtensions
         return textMeshProUGUI.TweenCharTransform(charIndex, matrix, duration);
     }
 #endif
-
 }
 
 #endif

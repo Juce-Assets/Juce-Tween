@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Juce.Tween
 {
@@ -22,6 +21,7 @@ namespace Juce.Tween
         private float elapsedTime;
 
         public delegate void Setter(T value);
+
         public delegate T Getter();
 
         public float Duration { get; }
@@ -83,7 +83,7 @@ namespace Juce.Tween
 
         public void Reset(ResetMode mode)
         {
-            if(firstTime)
+            if (firstTime)
             {
                 return;
             }

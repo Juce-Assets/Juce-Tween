@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 using UnityEngine.UI;
 
 public static class JuceTweenScrollRectExtensions

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public static class JuceTweenCameraExtensions
 {
@@ -29,7 +28,7 @@ public static class JuceTweenCameraExtensions
     public static Tween TweenBackgroundColorAlpha(this Camera camera, float to, float duration)
     {
         float to255 = to * 255.0f;
-        Tween tween = Tween.To(() => camera.backgroundColor.a, x => camera.backgroundColor = 
+        Tween tween = Tween.To(() => camera.backgroundColor.a, x => camera.backgroundColor =
             ColorUtils.ChangeAlpha(camera.backgroundColor, x), () => to, duration);
         tween.SetTarget(camera);
         return tween;

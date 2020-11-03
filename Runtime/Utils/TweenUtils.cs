@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Juce.Tween
 {
@@ -105,9 +104,9 @@ namespace Juce.Tween
                     }
                 }
 
-                if(!tween.IsActive)
+                if (!tween.IsActive)
                 {
-                    if (!tween.ForcedFinish )
+                    if (!tween.ForcedFinish)
                     {
                         AdvanceLoop(tween);
                     }

@@ -193,14 +193,14 @@ namespace Juce.Tween
                 return;
             }
 
-            if(allTweens.Count == 0)
+            if (allTweens.Count == 0)
             {
                 Append(tween);
 
                 return;
             }
 
-            if(lastGroupTween != null)
+            if (lastGroupTween != null)
             {
                 lastGroupTween.Add(tween);
 

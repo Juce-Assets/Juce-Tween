@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Juce.Tween;
 using UnityEngine;
-using Juce.Tween;
 
 public class TransformTests : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class TransformTests : MonoBehaviour
     private Tween toKill;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sequenceTween = new SequenceTween();
 
@@ -28,7 +27,7 @@ public class TransformTests : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("c"))
         {

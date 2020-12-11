@@ -131,7 +131,7 @@ namespace Juce.Tween
             LoopsResetMode = resetMode;
         }
 
-        public void Play(bool syncOnPlay = false)
+        public void Play(bool syncOnPlay = true)
         {
             if (IsActive)
             {

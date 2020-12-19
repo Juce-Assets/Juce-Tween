@@ -131,7 +131,7 @@ namespace Juce.Tween
             LoopsResetMode = resetMode;
         }
 
-        public void Play(bool syncOnPlay = false)
+        public void Play(bool syncOnPlay = true)
         {
             if (IsActive)
             {
@@ -212,7 +212,7 @@ namespace Juce.Tween
             onStart?.Invoke();
         }
 
-        internal void Reset(ResetMode resetMode)
+        public void Reset(ResetMode resetMode)
         {
             if (!HasValidTarget())
             {

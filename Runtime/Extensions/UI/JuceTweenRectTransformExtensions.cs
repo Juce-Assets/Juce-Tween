@@ -10,9 +10,41 @@ public static class JuceTweenRectTransformExtensions
         return tween;
     }
 
+    public static Tween TweenAnchorMaxX(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.anchorMax.x,
+            x => rectTransform.anchorMax = new Vector2(x, rectTransform.anchorMax.y), () => to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
+    public static Tween TweenAnchorMaxY(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.anchorMax.y,
+        y => rectTransform.anchorMax = new Vector2(rectTransform.anchorMax.x, y), () => to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
     public static Tween TweenAnchorMin(this RectTransform rectTransform, Vector2 to, float duration)
     {
         Tween tween = Tween.To(() => rectTransform.anchorMin, x => rectTransform.anchorMin = x, () => to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
+    public static Tween TweenAnchorMinX(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.anchorMin.x,
+            x => rectTransform.anchorMin = new Vector2(x, rectTransform.anchorMin.y), () => to, duration);
+        tween.SetTarget(rectTransform);
+        return tween;
+    }
+
+    public static Tween TweenAnchorMinY(this RectTransform rectTransform, float to, float duration)
+    {
+        Tween tween = Tween.To(() => rectTransform.anchorMin.y,
+        y => rectTransform.anchorMin = new Vector2(rectTransform.anchorMin.x, y), () => to, duration);
         tween.SetTarget(rectTransform);
         return tween;
     }

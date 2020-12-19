@@ -212,7 +212,7 @@ namespace Juce.Tween
             onStart?.Invoke();
         }
 
-        internal void Reset(ResetMode resetMode)
+        public void Reset(ResetMode resetMode)
         {
             if (!HasValidTarget())
             {

@@ -25,6 +25,7 @@ namespace Juce.Tween
         public delegate T Getter();
 
         public float Duration { get; }
+        public bool UseGeneralTimeScale { get; set; }
         public float TimeScale { get; set; }
 
         public bool IsPlaying { get; protected set; }
@@ -41,12 +42,8 @@ namespace Juce.Tween
 
             firstTime = true;
 
+            UseGeneralTimeScale = true;
             TimeScale = 1.0f;
-        }
-
-        public void SetEase(EaseDelegate easeFunction)
-        {
-            this.easeFunction = easeFunction;
         }
 
         public void Init()
@@ -127,7 +124,9 @@ namespace Juce.Tween
                 return;
             }
 
-            float dt = Time.deltaTime * JuceTween.TimeScale * TimeScale;
+            float generalTimeScale = UseGeneralTimeScale ? JuceTween.TimeScale : 1.0f;
+
+            float dt = Time.unscaledDeltaTime * generalTimeScale * TimeScale;
 
             elapsedTime += dt;
 
@@ -153,6 +152,11 @@ namespace Juce.Tween
 
             IsPlaying = false;
             IsCompleted = true;
+        }
+
+        public void SetEase(EaseDelegate easeFunction)
+        {
+            this.easeFunction = easeFunction;
         }
     }
 }

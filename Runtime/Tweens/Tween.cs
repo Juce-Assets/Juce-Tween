@@ -42,7 +42,7 @@ namespace Juce.Tween
 
         internal Tween()
         {
-            SetTimeScale(1);
+            SetTimeScale(1.0f);
             SetEase(Ease.Linear);
         }
 
@@ -73,6 +73,11 @@ namespace Juce.Tween
             EaseFunction = easeFunction;
 
             SetEaseInternal(easeFunction);
+        }
+
+        public void SetUseGeneralTimeScale(bool set)
+        {
+            SetUseGeneralTimeScaleInternal(set);
         }
 
         public void SetTimeScale(float set)
@@ -418,6 +423,10 @@ namespace Juce.Tween
             }
 
             onLoop = action;
+        }
+
+        protected virtual void SetUseGeneralTimeScaleInternal(bool set)
+        {
         }
 
         protected virtual void SetTimeScaleInternal(float timeScale)

@@ -10,6 +10,14 @@ namespace Juce.Tween
 
         private GroupTween lastGroupTween;
 
+        protected override void SetUseGeneralTimeScaleInternal(bool set)
+        {
+            for (int i = 0; i < allTweens.Count; ++i)
+            {
+                allTweens[i].SetUseGeneralTimeScale(set);
+            }
+        }
+
         protected override void SetTimeScaleInternal(float timeScale)
         {
             for (int i = 0; i < allTweens.Count; ++i)

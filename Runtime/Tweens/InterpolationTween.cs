@@ -9,13 +9,35 @@ namespace Juce.Tween
 
         private int tweenersLeftToFinish;
 
+        protected override void SetUseGeneralTimeScaleInternal(bool set)
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                allTweeners[i].UseGeneralTimeScale = set;
+            }
+        }
+
+        protected override void SetTimeScaleInternal(float timeScale)
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                allTweeners[i].TimeScale = timeScale;
+            }
+        }
+
+        protected override void SetEaseInternal(EaseDelegate easeFunction)
+        {
+            for (int i = 0; i < allTweeners.Count; ++i)
+            {
+                allTweeners[i].SetEase(easeFunction);
+            }
+        }
+
         protected override void ActivateInternal()
         {
             for (int i = 0; i < allTweeners.Count; ++i)
             {
-                ITweener currTweener = allTweeners[i];
-
-                currTweener.Init();
+                allTweeners[i].Init();
             }
         }
 

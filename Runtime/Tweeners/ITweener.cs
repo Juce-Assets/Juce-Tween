@@ -3,6 +3,7 @@
     internal interface ITweener
     {
         float Duration { get; }
+        bool UseGeneralTimeScale { get; set; }
         float TimeScale { get; set; }
         bool IsPlaying { get; }
         bool IsCompleted { get; }
